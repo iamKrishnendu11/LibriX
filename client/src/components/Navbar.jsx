@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { MorphingNavigation } from "../components/lightswind/morphing-navigation";
-import { HamburgerMenuOverlay } from "../components/lightswind/hamburger-menu-overlay";
+import  MorphingNavigation  from "./lightswind/morphing-navigation";
+import  HamburgerMenuOverlay  from "./lightswind/hamburger-menu-overlay";
 import {
   Home,
   ShoppingBag,

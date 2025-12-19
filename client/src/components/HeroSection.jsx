@@ -1,8 +1,8 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { VideoText } from "../components/lightswind/video-text";
-import { TypingText } from "../components/lightswind/typing-text";
-import ThreeDHoverGallery from "../components/lightswind/3d-hover-gallery";
+import  VideoText  from "./lightswind/video-text";
+import  TypingText  from "./lightswind/typing-text";
+import ThreeDHoverGallery from "./lightswind/3d-hover-gallery";
 
 // Asset Import
 import heroImage from "../assets/heroImage.jpg";
