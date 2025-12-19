@@ -15,3 +15,19 @@ export const generateSellerRefreshToken = (id) => {
     { expiresIn: process.env.SELLER_REFRESH_TOKEN_EXPIRE }
   );
 };
+
+export const generateBuyerAccessToken = (id) => {
+  return jwt.sign(
+    { id, role: "buyer" },
+    process.env.BUYER_ACCESS_TOKEN_SECRET,
+    { expiresIn: process.env.BUYER_ACCESS_TOKEN_EXPIRE }
+  );
+};
+
+export const generateBuyerRefreshToken = (id) => {
+  return jwt.sign(
+    { id, role: "buyer" },
+    process.env.BUYER_REFRESH_TOKEN_SECRET,
+    { expiresIn: process.env.BUYER_REFRESH_TOKEN_EXPIRE }
+  );
+};

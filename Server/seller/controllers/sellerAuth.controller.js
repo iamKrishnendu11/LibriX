@@ -2,8 +2,8 @@ import Seller from "../models/seller.model.js";
 import jwt from "jsonwebtoken";
 import {
   generateSellerAccessToken,
-  generateSellerRefreshToken
-} from "../utils/token.js";
+  generateSellerRefreshToken,
+} from "../../utils/token.js";
 
 /* REGISTER */
 export const registerSeller = async (req, res) => {
