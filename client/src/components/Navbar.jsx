@@ -1,6 +1,7 @@
 import { useState } from "react";
-import  MorphingNavigation  from "./lightswind/morphing-navigation";
-import  HamburgerMenuOverlay  from "./lightswind/hamburger-menu-overlay";
+import { MorphingNavigation } from "../components/lightswind/morphing-navigation";
+import { HamburgerMenuOverlay } from "../components/lightswind/hamburger-menu-overlay";
+import { Link } from "react-router-dom";
 import {
   Home,
   ShoppingBag,
@@ -71,15 +72,21 @@ export default function Navbar() {
 
         {/* RIGHT — LOGIN / CTA */}
         <div className="flex items-center gap-4 h-10">
-          <button className="flex items-center gap-2 rounded-xl border border-white/40 px-4 py-2 text-sm text-white self-center">
+         <Link
+            to="/login"
+            className="flex items-center gap-2 rounded-xl border border-white/40 px-4 py-2 text-sm text-white self-center"
+          >
             <LogIn size={16} />
             Login
-          </button>
+          </Link>
 
-          <button className="hidden md:flex items-center gap-2 rounded-xl bg-white px-5 py-2 text-sm text-black">
-            Get Started
-            <ArrowRight size={16} />
-          </button>
+          <Link
+  to="/register"
+  className="hidden md:flex items-center gap-2 rounded-xl bg-white px-5 py-2 text-sm text-black"
+>
+  Get Started
+  <ArrowRight size={16} />
+</Link>
         </div>
 
       </div>
