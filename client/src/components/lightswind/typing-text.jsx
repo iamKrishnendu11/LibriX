@@ -1,29 +1,10 @@
 "use client";
 
-import { motion, Variants } from "framer-motion";
-import React, {
-  ElementType,
-  ReactNode,
-  useEffect,
-  useState,
-} from "react";
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import { cn } from "../../lib/utils";
 
-export interface TypingTextProps {
-  children: ReactNode;
-  as?: ElementType;
-  className?: string;
-  delay?: number;
-  duration?: number;
-  fontSize?: string;
-  fontWeight?: string;
-  color?: string;
-  letterSpacing?: string;
-  align?: "left" | "center" | "right";
-  loop?: boolean;
-}
-
-export const TypingText = ({
+const TypingText = ({
   children,
   as: Component = "div",
   className = "",
@@ -34,41 +15,41 @@ export const TypingText = ({
   color = "text-white",
   letterSpacing = "tracking-wide",
   align = "left",
-  loop = false,
-}: TypingTextProps) => {
-  const [textContent, setTextContent] = useState<string>("");
+  loop = false, // kept for API compatibility
+}) => {
+  const [textContent, setTextContent] = useState("");
 
   useEffect(() => {
-    const extractText = (node: ReactNode): string => {
+    const extractText = (node) => {
       if (typeof node === "string" || typeof node === "number") {
         return node.toString();
       }
+
       if (Array.isArray(node)) {
         return node.map(extractText).join("");
       }
-      if (
-        React.isValidElement(node) &&
-        typeof node.props.children !== "undefined"
-      ) {
+
+      if (React.isValidElement(node) && node.props?.children) {
         return extractText(node.props.children);
       }
+
       return "";
     };
 
     setTextContent(extractText(children));
   }, [children]);
 
-  const characters = textContent.split("").map((char) =>
-    char === " " ? "\u00A0" : char
-  );
+  const characters = textContent
+    .split("")
+    .map((char) => (char === " " ? "\u00A0" : char));
 
-  const characterVariants: Variants = {
+  const characterVariants = {
     hidden: { opacity: 0, scale: 0.95 },
-    visible: (i: number) => ({
+    visible: (i) => ({
       opacity: 1,
       scale: 1,
       transition: {
-        delay: delay + i * (duration / characters.length),
+        delay: delay + i * (duration / Math.max(characters.length, 1)),
         duration: 0.3,
         ease: "easeInOut",
       },
@@ -114,3 +95,5 @@ export const TypingText = ({
     </Component>
   );
 };
+
+export default TypingText;

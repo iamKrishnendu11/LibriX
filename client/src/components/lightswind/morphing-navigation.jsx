@@ -4,33 +4,7 @@ import React, { useEffect, useRef, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "../../lib/utils";
 
-export interface MorphingNavigationLink {
-  id: string;
-  label: string;
-  href: string;
-  icon?: React.ReactNode;
-}
-
-export interface MorphingNavigationProps {
-  links: MorphingNavigationLink[];
-  scrollThreshold?: number;
-  enablePageBlur?: boolean;
-  theme?: "dark" | "light" | "glass" | "custom";
-  backgroundColor?: string;
-  textColor?: string;
-  borderColor?: string;
-  initialTop?: number;
-  compactTop?: number;
-  animationDuration?: number;
-  className?: string;
-  onLinkClick?: (link: MorphingNavigationLink) => void;
-  onMenuToggle?: (isOpen: boolean) => void;
-  enableSmoothTransitions?: boolean;
-  customHamburgerIcon?: React.ReactNode;
-  disableAutoMorph?: boolean;
-}
-
-export const MorphingNavigation: React.FC<MorphingNavigationProps> = ({
+const MorphingNavigation = ({
   links,
   scrollThreshold = 100,
   enablePageBlur = true,
@@ -51,17 +25,17 @@ export const MorphingNavigation: React.FC<MorphingNavigationProps> = ({
   const [isSticky, setIsSticky] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const navRef = useRef<HTMLElement>(null);
+  const navRef = useRef(null);
 
+  /* Detect mobile */
   useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  /* Theme styles */
   const getThemeStyles = useCallback(() => {
     switch (theme) {
       case "dark":
@@ -94,8 +68,10 @@ export const MorphingNavigation: React.FC<MorphingNavigationProps> = ({
 
   const themeStyles = getThemeStyles();
 
+  /* Auto morph on scroll */
   useEffect(() => {
     if (disableAutoMorph && !isMobile) return;
+
     const handleScroll = () => {
       if (isMobile) {
         setIsSticky(true);
@@ -105,6 +81,7 @@ export const MorphingNavigation: React.FC<MorphingNavigationProps> = ({
         setIsMenuOpen(false);
       }
     };
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [scrollThreshold, disableAutoMorph, isMobile]);
@@ -112,34 +89,35 @@ export const MorphingNavigation: React.FC<MorphingNavigationProps> = ({
   const handleMenuToggle = () => {
     const open = !isMenuOpen;
     setIsMenuOpen(open);
-    if (isMobile && open) {
-      setIsSticky(true);
-    } else if (isMobile && !open) {
-      setIsSticky(window.scrollY >= scrollThreshold);
+
+    if (isMobile) {
+      setIsSticky(open || window.scrollY >= scrollThreshold);
     } else {
       setIsSticky(false);
     }
+
     onMenuToggle?.(open);
   };
 
-  const handleLinkClick = (link: MorphingNavigationLink, e: React.MouseEvent) => {
+  const handleLinkClick = (link, e) => {
     e.preventDefault();
     setIsMenuOpen(false);
     onLinkClick?.(link);
+
     if (enableSmoothTransitions) {
       const target = document.querySelector(link.href);
-      if (target) {
-        target.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
+      target?.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
 
+  /* Click outside */
   useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (navRef.current && !navRef.current.contains(e.target as Node) && isMenuOpen) {
+    const handleClickOutside = (e) => {
+      if (navRef.current && !navRef.current.contains(e.target) && isMenuOpen) {
         setIsMenuOpen(false);
       }
     };
+
     document.addEventListener("click", handleClickOutside);
     return () => document.removeEventListener("click", handleClickOutside);
   }, [isMenuOpen]);
@@ -152,6 +130,7 @@ export const MorphingNavigation: React.FC<MorphingNavigationProps> = ({
 
   return (
     <>
+      {/* Page blur */}
       <AnimatePresence>
         {enablePageBlur && isMenuOpen && (
           <motion.div
@@ -163,9 +142,9 @@ export const MorphingNavigation: React.FC<MorphingNavigationProps> = ({
         )}
       </AnimatePresence>
 
+      {/* Navbar */}
       <motion.header
         className={cn("fixed top-4 z-50 w-full", className)}
-        initial={false}
         animate={{
           top: isMobile ? compactTop : isSticky ? compactTop : initialTop,
         }}
@@ -192,7 +171,8 @@ export const MorphingNavigation: React.FC<MorphingNavigationProps> = ({
           style={{ top: 0, ...customStyles }}
         >
           <AnimatePresence>
-            {!isMobile && !isSticky &&
+            {!isMobile &&
+              !isSticky &&
               links.map((link, i) => (
                 <motion.a
                   key={link.id}
@@ -204,12 +184,15 @@ export const MorphingNavigation: React.FC<MorphingNavigationProps> = ({
                   transition={{ delay: i * 0.1 }}
                   className="px-5 py-2.5 text-sm font-bold lowercase tracking-wide"
                 >
-                  {link.icon && <span className="mr-2 inline-block">{link.icon}</span>}
+                  {link.icon && (
+                    <span className="mr-2 inline-block">{link.icon}</span>
+                  )}
                   {link.label}
                 </motion.a>
               ))}
           </AnimatePresence>
 
+          {/* Hamburger */}
           <motion.button
             onClick={handleMenuToggle}
             className={cn(
@@ -217,23 +200,23 @@ export const MorphingNavigation: React.FC<MorphingNavigationProps> = ({
               themeStyles.button,
               {
                 hidden: !isSticky && !isMobile,
-                block: isMobile || isSticky,
+                block: isSticky || isMobile,
               }
             )}
-            animate={{ scale: isMobile || isSticky ? 1 : 0 }}
-            transition={{ delay: isMobile || isSticky ? 0.2 : 0 }}
+            animate={{ scale: isSticky || isMobile ? 1 : 0 }}
           >
             {customHamburgerIcon || (
               <div className="flex flex-col items-center justify-center h-full">
-                <span className="block w-4 h-0.5 bg-current my-1"></span>
-                <span className="block w-4 h-0.5 bg-current my-1"></span>
-                <span className="block w-4 h-0.5 bg-current my-1"></span>
+                <span className="block w-4 h-0.5 bg-current my-1" />
+                <span className="block w-4 h-0.5 bg-current my-1" />
+                <span className="block w-4 h-0.5 bg-current my-1" />
               </div>
             )}
           </motion.button>
         </motion.nav>
       </motion.header>
 
+      {/* Mobile menu */}
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
@@ -241,7 +224,6 @@ export const MorphingNavigation: React.FC<MorphingNavigationProps> = ({
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.3 }}
           >
             <motion.div
               className={cn(
@@ -250,9 +232,6 @@ export const MorphingNavigation: React.FC<MorphingNavigationProps> = ({
                 themeStyles.text
               )}
               style={customStyles}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
             >
               <div className="flex flex-col space-y-4">
                 {links.map((link) => (
@@ -260,9 +239,11 @@ export const MorphingNavigation: React.FC<MorphingNavigationProps> = ({
                     key={link.id}
                     href={link.href}
                     onClick={(e) => handleLinkClick(link, e)}
-                    className="font-bold text-lg tracking-wide lowercase hover:scale-105 transition-transform"
+                    className="font-bold text-lg lowercase hover:scale-105 transition-transform"
                   >
-                    {link.icon && <span className="inline-block mr-3">{link.icon}</span>}
+                    {link.icon && (
+                      <span className="inline-block mr-3">{link.icon}</span>
+                    )}
                     {link.label}
                   </a>
                 ))}
