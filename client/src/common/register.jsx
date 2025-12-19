@@ -4,14 +4,20 @@ import { Send, User, Mail, Phone, CheckCircle, AlertCircle, Loader2, Home, Store
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { useNavigate } from 'react-router-dom'; // Added useNavigate
+
+// CHANGE THIS TO MATCH YOUR BACKEND PORT
+const API_URL = "http://localhost:3000/api";
 
 export default function Register() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const navigate = useNavigate(); // Hook for redirection
 
   const [userType, setUserType] = useState('buyer');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
+  const [serverError, setServerError] = useState("");
 
   const [formData, setFormData] = useState({
     name: '',
@@ -91,26 +97,60 @@ export default function Register() {
     if (!validateForm()) return;
 
     setIsSubmitting(true);
+    setSubmitStatus(null);
+    setServerError("");
 
     try {
-      // Simulate API call - replace with actual registration logic
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      setSubmitStatus('success');
-      setFormData({ 
-        name: '', 
-        email: '', 
-        phone: '', 
-        address: '', 
-        password: '', 
-        confirmPassword: '',
-        shopName: '',
-        gstNumber: ''
+      const payload = {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        password: formData.password,
+        address: formData.address,
+      };
+
+      if (userType === 'seller') {
+        payload.shopName = formData.shopName;
+        payload.gstNumber = formData.gstNumber;
+        payload.shopAddress = formData.address; 
+      }
+
+      const response = await fetch(`${API_URL}/${userType}/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
       });
-      setTimeout(() => setSubmitStatus(null), 5000);
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Registration failed");
+      }
+      
+      // --- LOGIC FOR AUTO-LOGIN ---
+      // If backend returns a token on register, save it to satisfy Dashboard auth check
+      if (data.accessToken) {
+        localStorage.setItem("accessToken", data.accessToken);
+        localStorage.setItem("user", JSON.stringify(data.user || { name: formData.name }));
+        localStorage.setItem("userType", userType);
+      }
+
+      setSubmitStatus('success');
+
+      setTimeout(() => {
+        setSubmitStatus(null);
+        // If they are a seller and we have a token, go to dashboard. Else, go to login.
+        if (userType === 'seller' && data.accessToken) {
+          navigate("/seller/dashboard");
+        } else {
+          navigate("/login"); 
+        }
+      }, 2000);
+
     } catch (error) {
+      console.error("Register Error:", error);
       setSubmitStatus('error');
-      setTimeout(() => setSubmitStatus(null), 5000);
+      setServerError(error.message); 
     } finally {
       setIsSubmitting(false);
     }
@@ -598,7 +638,7 @@ export default function Register() {
                       ) : (
                         <>
                           <AlertCircle className="w-5 h-5" />
-                          <span>Something went wrong. Please try again.</span>
+                          <span>{serverError || "Something went wrong. Please try again."}</span>
                         </>
                       )}
                     </motion.div>

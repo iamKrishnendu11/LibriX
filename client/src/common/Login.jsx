@@ -3,16 +3,21 @@ import { motion, useInView, AnimatePresence } from 'framer-motion';
 import { LogIn, Phone, Lock, CheckCircle, AlertCircle, Loader2, Home, Store, Landmark } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; // Added useNavigate
 import { createPageUrl } from '@/utils/index.js';
+
+// CHANGE THIS TO MATCH YOUR BACKEND PORT
+const API_URL = "http://localhost:3000/api"; 
 
 export default function login() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const navigate = useNavigate(); // Hook for redirection
 
   const [userType, setUserType] = useState('buyer');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
+  const [serverError, setServerError] = useState(""); // State to hold backend error message
 
   const [formData, setFormData] = useState({
     phone: '',
@@ -63,16 +68,45 @@ export default function login() {
     if (!validateForm()) return;
 
     setIsSubmitting(true);
+    setSubmitStatus(null);
+    setServerError("");
 
     try {
-      // Simulate API call - replace with actual login logic
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      const response = await fetch(`${API_URL}/${userType}/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          phone: formData.phone,
+          password: formData.password
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Login failed");
+      }
       
+      // --- SECURE STORAGE ---
+      // Use fallbacks to prevent "undefined" string from being saved
+      localStorage.setItem("accessToken", data.accessToken);
+      localStorage.setItem("user", JSON.stringify(data.user || { name: "User" }));
+      localStorage.setItem("userType", userType);
+
       setSubmitStatus('success');
-      setTimeout(() => setSubmitStatus(null), 5000);
+      
+      setTimeout(() => {
+        setSubmitStatus(null);
+        if (userType === 'seller') {
+          navigate("/seller/dashboard"); 
+        } else {
+          navigate("/"); 
+        }
+      }, 1500);
+
     } catch (error) {
       setSubmitStatus('error');
-      setTimeout(() => setSubmitStatus(null), 5000);
+      setServerError(error.message);
     } finally {
       setIsSubmitting(false);
     }
@@ -298,7 +332,7 @@ export default function login() {
                   ) : (
                     <>
                       <AlertCircle className="w-5 h-5" />
-                      <span>Invalid credentials. Please try again.</span>
+                      <span>{serverError || "Invalid credentials. Please try again."}</span>
                     </>
                   )}
                 </motion.div>
