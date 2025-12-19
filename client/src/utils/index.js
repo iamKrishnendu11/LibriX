@@ -4,6 +4,7 @@ const pageRoutes = {
   Landing: '/',
   Register:'/register',
   Login: '/login',
+  SellerDashboard: '/seller/dashboard',
   
 };
 
