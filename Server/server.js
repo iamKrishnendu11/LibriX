@@ -2,13 +2,16 @@ import express from 'express';
 import cors from 'cors';
 import 'dotenv/config';
 import connectDB from './configs/db.js';
+import connectCloudinary from './configs/cloudinaryConfig.js';
 import sellerAuthRouter from './seller/routes/sellerAuth.route.js';
 import buyerAuthRouter from './customer/routes/buyerAuth.route.js';
 import lenderAuthRoutes from './lender/routes/lenderAuth.route.js'
+import ocrRouter from './seller/routes/ocr.route.js';
 
 const app = express();
 const port = process.env.PORT || 3000;
 await connectDB();
+connectCloudinary();
 
 //Middleware
 app.use(cors());
@@ -17,6 +20,7 @@ app.use(express.json());
 app.use("/api/seller", sellerAuthRouter);
 app.use("/api/buyer", buyerAuthRouter);
 app.use("/api/lender", lenderAuthRoutes);
+app.use("/api/ocr", ocrRouter);
 
 
 app.get('/', (req, res) => {
