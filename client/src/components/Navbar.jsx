@@ -1,6 +1,5 @@
-
-import  MorphingNavigation  from "../components/lightswind/morphing-navigation";
-import  HamburgerMenuOverlay  from "../components/lightswind/hamburger-menu-overlay";
+import MorphingNavigation from "../components/lightswind/morphing-navigation";
+import HamburgerMenuOverlay from "../components/lightswind/hamburger-menu-overlay";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 
@@ -15,17 +14,22 @@ import {
 import logo from "../assets/logo.png";
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 5);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
   const [menuOpen, setMenuOpen] = useState(false);
-  
+  const [onHero, setOnHero] = useState(true);
+
+  // HERO SECTION OBSERVER
+  useEffect(() => {
+  const handleScroll = () => {
+    // Change navbar after 120px scroll
+    setOnHero(window.scrollY < 120);
+  };
+
+  handleScroll(); // run on load
+  window.addEventListener("scroll", handleScroll);
+  return () => window.removeEventListener("scroll", handleScroll);
+}, []);
+
+
 
   const links = [
     { id: "home", label: "Home", href: "#home", icon: <Home size={16} /> },
@@ -42,10 +46,10 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="fixed top-0 z-50 w-full bg-transparent backdrop-blur-md">
+    <nav className="fixed top-0 z-50 w-full bg-transparent">
       <div className="mx-auto flex h-24 max-w-7xl items-center justify-between px-6">
 
-        {/* LEFT — MOBILE HAMBURGER + LOGO */}
+        {/* LEFT — MOBILE ONLY */}
         <div className="flex items-center gap-4 h-10">
           <div className="md:hidden flex items-center h-10 -ml-6">
             <HamburgerMenuOverlay
@@ -62,65 +66,77 @@ export default function Navbar() {
             />
           </div>
 
+          {/* LOGO — DESKTOP ONLY */}
           <img
             src={logo}
             alt="Logo"
-            className="ml-10 h-18 w-auto select-none self-center"
+            className={`hidden md:block ml-10 h-18 w-auto select-none self-center transition-all duration-300
+              ${
+                onHero
+                  ? "brightness-0 invert"
+                  : "brightness-100 invert-0"
+              }
+            `}
           />
         </div>
 
-        {/* CENTER — DESKTOP */}
-        <div className="hidden md:flex flex-1 justify-center">
+        {/* CENTER — DESKTOP NAV */}
+        <div
+          className={`hidden md:flex justify-center transition-all duration-300
+            ${onHero ? "flex-[0.6]" : "flex-1"}
+          `}
+        >
           <MorphingNavigation
             links={links}
             theme="custom"
             backgroundColor="transparent"
             borderColor="transparent"
-            textColor={scrolled ? "#000000" : "#ffffff"}
+            textColor={onHero ? "#ffffff" : "#000000"}
             animationDuration={1.1}
             enablePageBlur={false}
           />
         </div>
 
-
-        {/* RIGHT — LOGIN / CTA */}
+        {/* RIGHT */}
         <div className="flex items-center gap-4 h-10">
-  {/* LOGIN */}
-  <Link
-    to="/login"
-    className={`flex items-center gap-2 rounded-xl px-4 py-2 text-sm self-center transition-all duration-300
-      ${
-        scrolled
-          ? "bg-gradient-to-r from-yellow-100 to-green-300 text-black border border-transparent"
-          : "border border-white/40 text-white"
-      }
-    `}
-  >
-    <LogIn size={16} />
-    Login
-  </Link>
 
-  {/* GET STARTED */}
-  <Link
-    to="/register"
-    className={`hidden md:flex items-center gap-2 rounded-xl px-5 py-2 text-sm transition-all duration-300
-      ${
-        scrolled
-          ? "bg-gradient-to-r from-yellow-400 to-green-600 text-black"
-          : "bg-white text-black"
-      }
-    `}
-  >
-    Get Started
-    <ArrowRight size={16} />
-  </Link>
+          {/* LOGIN */}
+          <Link
+            to="/login"
+            className={`flex items-center gap-2 rounded-xl px-4 py-2 text-sm transition-all duration-300
+              ${
+                onHero
+                  ? "md:text-white"
+                  : "border border-black bg-gradient-to-r from-yellow-100 to-green-300 text-black"
+              }
+            `}
+          >
+            <LogIn size={16} />
+            Login
+          </Link>
+
+          {/* GET STARTED */}
+          <Link
+            to="/register"
+            className={`hidden md:flex items-center gap-2 rounded-xl px-5 py-2 text-sm transition-all duration-300
+              ${
+                onHero
+                  ? "text-white"
+                  : "border border-black bg-gradient-to-r from-yellow-400 to-green-600 text-black"
+              }
+            `}
+          >
+            Get Started
+            <ArrowRight size={16} />
+          </Link>
+
         </div>
-
-
       </div>
     </nav>
   );
 }
+
+
 
 
 // import { useState } from "react";

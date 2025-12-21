@@ -73,8 +73,8 @@ const Footer = () => {
               >
                 <img src="/Logo2.png" alt="logo" className="w-full h-full" />
               </motion.div>
-              <span className="text-2xl font-medium text-white/70">
-                Enviromat
+              <span className="text-5xl font-medium text-white/100">
+                LibriX!
               </span>
             </motion.div>
 
@@ -140,7 +140,7 @@ const Footer = () => {
                 }}
               />
               <motion.button 
-                className="px-4 py-2 bg-purple-400 text-white rounded-r-lg hover:bg-purple-500 transition-colors text-sm font-medium"
+                className="px-4 py-2 bg-gradient-to-r from-yellow-400 to-green-600 text-black rounded-r-lg hover:bg-purple-500 transition-colors text-sm font-medium"
                 whileHover={{ 
                   scale: 1.05,
                   backgroundColor: '#9333ea'
@@ -225,7 +225,7 @@ const Footer = () => {
                   transition={{ duration: 0.2 }}
                 >
                   <span className="text-white/70 text-sm">
-                    +88 0324234234
+                    +91 74926XXXXX
                   </span>
                 </motion.li>
                 <motion.li 
@@ -235,7 +235,7 @@ const Footer = () => {
                   transition={{ duration: 0.2 }}
                 >
                   <span className="text-white/70 text-sm">
-                    hello@fibostudio.com
+                    algorhythm006@gmail.com
                   </span>
                 </motion.li>
               </ul>
@@ -259,7 +259,7 @@ const Footer = () => {
                 whileHover={{color: '#10B981'}}
                 transition={{ duration: 0.2 }}
               >
-                336 East Shewrapara, Mirpur, Dhaka, Bangladesh
+                Garia , Kolkata , WB-700152
               </motion.p>
             </div>
           </motion.div>
@@ -288,6 +288,7 @@ const Footer = () => {
             transition={{ duration: 0.3 }}
           >
             Rent.  Read.  Repeat.
+            
           </motion.span>
         </motion.div>
 
