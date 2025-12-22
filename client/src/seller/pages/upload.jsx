@@ -157,7 +157,7 @@ const fetchMyBooks = async () => {
     const formDataToSend = new FormData();
     formDataToSend.append('image', file);
     try {
-      const response = await fetch('http://localhost:3000/api/books/process-ocr', {
+      const response = await fetch('http://localhost:3000/api/ocr/process', {
         method: 'POST', body: formDataToSend,
       });
       if (!response.ok) throw new Error("OCR processing failed");
@@ -337,6 +337,9 @@ const handleSubmit = async (e) => {
                             <SelectItem value="technology">Technology</SelectItem>
                             <SelectItem value="fiction">Fiction</SelectItem>
                             <SelectItem value="non-fiction">Non-Fiction</SelectItem>
+                            <SelectItem value="self-help">Self-Help</SelectItem>
+                            <SelectItem value="medical">Medical</SelectItem>
+                            <SelectItem value="academic">Academic</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>

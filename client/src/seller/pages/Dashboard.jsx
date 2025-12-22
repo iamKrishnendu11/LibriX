@@ -14,10 +14,11 @@ import {
   ArrowUpRight,
   MessageCircle,
   Gavel,
-  Loader2
+  Loader2,
+  User,
+  Calendar
 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { User , Calendar } from "lucide-react";
 
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import Navbar from './Navbar';
@@ -48,14 +49,17 @@ export default function SellerDashboard() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState(null);
+  
+  // NEW: State for real backend books
+  const [books, setBooks] = useState([]);
 
- // AUTHENTICATION CHECK
+  // AUTHENTICATION & DATA FETCHING
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
+    const sellerToken = localStorage.getItem('sellerToken'); // Standardizing with your upload page
     const userType = localStorage.getItem('userType');
-    const storedUserRaw = localStorage.getItem('user'); // Get raw string first
+    const storedUserRaw = localStorage.getItem('user');
 
-    // Check if user data is valid and not the string "undefined"
     if (!token || userType !== 'seller' || !storedUserRaw || storedUserRaw === "undefined") {
       console.warn("Auth failed or user data missing, redirecting...");
       navigate('/login');
@@ -63,6 +67,10 @@ export default function SellerDashboard() {
       try {
         const parsedUser = JSON.parse(storedUserRaw);
         setUser(parsedUser);
+        
+        // Fetch real books from backend
+        fetchBackendBooks(sellerToken || token);
+        
         setIsLoading(false);
       } catch (err) {
         console.error("Failed to parse user data:", err);
@@ -70,7 +78,27 @@ export default function SellerDashboard() {
       }
     }
   }, [navigate]);
-  // Prevent rendering protected content while checking auth
+
+  const fetchBackendBooks = async (token) => {
+    try {
+      const response = await fetch('http://localhost:3000/api/books/my-books', {
+        method: 'GET',
+        headers: { 
+          'Authorization': `Bearer ${token}` 
+        }
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setBooks(data);
+      } else {
+        console.error("Failed to fetch books:", response.status);
+      }
+    } catch (error) {
+      console.error("Error fetching dashboard books:", error);
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-yellow-50 via-white to-green-50">
@@ -82,7 +110,7 @@ export default function SellerDashboard() {
   const stats = [
     {
       title: 'Books Listed',
-      value: '45',
+      value: books.length.toString(), // Real count from backend
       icon: BookOpen,
       change: '+5 this week',
       bgColor: 'bg-white-500',
@@ -113,26 +141,6 @@ export default function SellerDashboard() {
       iconColor: 'text-grey-600'
     },
   ];
-  const myBooks = [
-    {
-      id: 1,
-      title: "The Alchemist",
-      author: "Paulo Coelho",
-      cover_image: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=300&h=400&fit=crop",
-      publishing_year: 1988,
-      sell_price: 299,
-      status: "available"
-    },
-    {
-      id: 2,
-      title: "Atomic Habits",
-      author: "James Clear",
-      cover_image: "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=300&h=400&fit=crop",
-      publishing_year: 2018,
-      sell_price: 450,
-      status: "available"
-    },
-  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-white to-green-50 pb-24 md:pb-8">
@@ -159,7 +167,7 @@ export default function SellerDashboard() {
               </Button>
             </Link>
 
-            <Link to={createPageUrl('SellerUpload')}>
+            <Link to="/seller/uploads">
               <Button
                 className="
                   bg-gradient-to-r from-yellow-400 to-green-700 text-black
@@ -175,21 +183,15 @@ export default function SellerDashboard() {
           </div>
         </div>
 
-        {/* ---------- STATS GRID (GLASS) ---------- */}
+        {/* ---------- STATS GRID ---------- */}
         <motion.div
           initial="hidden"
           animate="visible"
           variants={{
             hidden: {},
-            visible: {
-              transition: { staggerChildren: 0.15 }
-            }
+            visible: { transition: { staggerChildren: 0.15 } }
           }}
-          className="
-            grid grid-cols-2 lg:grid-cols-4 gap-6 mb-10
-            p-4 md:p-6
-            rounded-2xl
-          "
+          className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-10 p-4 md:p-6 rounded-2xl"
         >
           {stats.map((stat) => (
             <motion.div
@@ -204,16 +206,7 @@ export default function SellerDashboard() {
                 }
               }}
             >
-              <Card
-                className="
-                  bg-gradient-to-br from-green-200 to-yellow-100 backdrop-blur-lg
-                  border border-white/20
-                  rounded-4xl
-                  shadow-md
-                  hover:shadow-xl hover:scale-[1.04]
-                  transition-all duration-300
-                "
-              >
+              <Card className="bg-gradient-to-br from-green-200 to-yellow-100 backdrop-blur-lg border border-white/20 rounded-4xl shadow-md hover:shadow-xl hover:scale-[1.04] transition-all duration-300">
                 <CardContent className="p-4 md:p-6">
                   <div className="flex items-start justify-between mb-4">
                     <div className={`p-3 rounded-xl ${stat.bgColor}`}>
@@ -221,7 +214,6 @@ export default function SellerDashboard() {
                     </div>
                     <ArrowUpRight className="w-7 h-7 text-black" />
                   </div>
-
                   <div className="text-4xl font-bold bg-gradient-to-r from-black to-gray-500 bg-clip-text text-transparent mb-1">
                     {stat.value}
                   </div>
@@ -235,8 +227,6 @@ export default function SellerDashboard() {
 
         {/* ---------- CHARTS & BIDS ---------- */}
         <div className="grid bg-gradient-to-br from-yellow-50 via-white to-green-50 lg:grid-cols-3 gap-6 mb-10">
-
-          {/* Monthly Sales Chart */}
           <Card className="lg:col-span-2 border-0 shadow-md">
             <CardHeader>
               <CardTitle className="flex text-2xl items-center gap-2">
@@ -244,36 +234,24 @@ export default function SellerDashboard() {
                 Monthly Sales
               </CardTitle>
             </CardHeader>
-
             <CardContent className="h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={salesData}>
-
-                  {/* Gradient definition for bars */}
                   <defs>
                     <linearGradient id="barGradient" x1="0" y1="0" x2="1" y2="1">
-                      <stop offset="0%" stopColor="#bbf7d0" />   {/* green-200 */}
-                      <stop offset="100%" stopColor="#fef9c3" /> {/* yellow-100 */}
+                      <stop offset="0%" stopColor="#bbf7d0" />
+                      <stop offset="100%" stopColor="#fef9c3" />
                     </linearGradient>
                   </defs>
-
                   <XAxis dataKey="month" axisLine={false} tickLine={false} />
                   <YAxis axisLine={false} tickLine={false} />
                   <Tooltip />
-
-                  <Bar
-                    dataKey="sales"
-                    fill="url(#barGradient)"
-                    radius={[6, 6, 0, 0]}
-                    animationDuration={1300}
-                    animationEasing="linear"
-                  />
+                  <Bar dataKey="sales" fill="url(#barGradient)" radius={[6, 6, 0, 0]} animationDuration={1300} animationEasing="linear" />
                 </BarChart>
               </ResponsiveContainer>
             </CardContent>
           </Card>
 
-          {/* Bid Requests */}
           <Card className="border-0 shadow-md">
             <CardHeader>
               <CardTitle className="flex text-2xl items-center gap-2">
@@ -281,62 +259,37 @@ export default function SellerDashboard() {
                 Bid Requests
               </CardTitle>
             </CardHeader>
-
             <CardContent className="space-y-4">
               {activeBids.map(bid => (
-                <div
-                  key={bid.id}
-                  className="p-3 bg-gradient-to-br from-green-200 to-yellow-100 backdrop-blur-lg rounded-xl"
-                >
+                <div key={bid.id} className="p-3 bg-gradient-to-br from-green-200 to-yellow-100 backdrop-blur-lg rounded-xl">
                   <p className="font-medium text-sm">{bid.book}</p>
                   <div className="flex justify-between mt-2 text-sm">
                     <span className="text-amber-600">₹{bid.budget}</span>
-                    <Badge className="bg-gray-100 text-green-900">
-                      {bid.offers} offers
-                    </Badge>
+                    <Badge className="bg-gray-100 text-green-900">{bid.offers} offers</Badge>
                   </div>
                 </div>
               ))}
             </CardContent>
           </Card>
-
         </div>
 
-
-        {/* ---------- RECENT ORDERS ---------- */}
-        {/* Wrapper to keep right half blank */}
+        {/* ---------- RECENT ORDERS & MY BOOKS ---------- */}
         <div className="flex w-full">
-          
           {/* Left half – Recent Orders */}
           <motion.div
             className="w-full lg:w-1/2"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.3 }}
-            variants={{
-              hidden: {},
-              visible: {
-                transition: { staggerChildren: 0.15 },
-              },
-            }}
+            variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.15 } } }}
           >
             <Card className="border border-white/20 shadow-xl bg-white/40 backdrop-blur-xl">
-              
               <CardHeader className="flex flex-row justify-between items-center">
                 <CardTitle className="text-2xl bg-gradient-to-r from-black to-green-700 bg-clip-text text-transparent">
                   Recent Orders
                 </CardTitle>
-
                 <Link to={createPageUrl('SellerChat')}>
-                  <Button
-                    size="sm"
-                    className="
-                      bg-gradient-to-r from-yellow-400 to-green-700 text-black
-                      transition-all duration-300 ease-out
-                      hover:scale-110 hover:shadow-2xl
-                      active:scale-95
-                    "
-                  >
+                  <Button size="sm" className="bg-gradient-to-r from-yellow-400 to-green-700 text-black transition-all duration-300 ease-out hover:scale-110 hover:shadow-2xl active:scale-95">
                     <MessageCircle className="w-4 h-4 mr-2" />
                     Messages
                   </Button>
@@ -349,51 +302,22 @@ export default function SellerDashboard() {
                     key={order.id}
                     variants={{
                       hidden: { opacity: 0, y: 20, scale: 0.95 },
-                      visible: {
-                        opacity: 1,
-                        y: 0,
-                        scale: 1,
-                        transition: { duration: 0.35, ease: "easeOut" },
-                      },
+                      visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.35, ease: "easeOut" } },
                     }}
-                    className="
-                      flex justify-between items-center
-                      p-4 rounded-xl
-                      bg-gradient-to-br from-green-50 to-yellow-50
-                      border border-white/30
-                      hover:shadow-lg hover:scale-[1.02]
-                      transition-all duration-300
-                    "
+                    className="flex justify-between items-center p-4 rounded-xl bg-gradient-to-br from-green-50 to-yellow-50 border border-white/30 hover:shadow-lg hover:scale-[1.02] transition-all duration-300"
                   >
-                    {/* Left */}
                     <div className="flex gap-4 items-center">
                       <div className="w-11 h-11 bg-gradient-to-br from-yellow-200 to-green-100 rounded-lg flex items-center justify-center">
                         <Package className="w-5 h-5 text-black" />
                       </div>
-
                       <div>
                         <p className="font-medium text-slate-900">{order.book}</p>
-                        <p className="text-sm text-slate-600">
-                          Buyer: {order.buyer}
-                        </p>
+                        <p className="text-sm text-slate-600">Buyer: {order.buyer}</p>
                       </div>
                     </div>
-
-                    {/* Right */}
                     <div className="flex gap-4 items-center">
-                      <p className="font-semibold text-slate-900">
-                        ₹{order.amount}
-                      </p>
-
-                      <Badge
-                        className={
-                          order.status === "pending"
-                            ? "bg-amber-100 text-amber-800"
-                            : order.status === "ready"
-                            ? "bg-blue-100 text-blue-800"
-                            : "bg-green-100 text-green-800"
-                        }
-                      >
+                      <p className="font-semibold text-slate-900">₹{order.amount}</p>
+                      <Badge className={order.status === "pending" ? "bg-amber-100 text-amber-800" : order.status === "ready" ? "bg-blue-100 text-blue-800" : "bg-green-100 text-green-800"}>
                         {order.status.replace("_", " ")}
                       </Badge>
                     </div>
@@ -402,109 +326,72 @@ export default function SellerDashboard() {
               </CardContent>
             </Card>
           </motion.div>
+{/* Right half – Real My Books Data */}
+<div className="hidden pl-5 lg:block lg:w-1/2">
+  <div className="lg:col-span-1">
+    <Card className="border-0 shadow-md bg-gradient-to-br from-green-50 to-yellow-50 h-fit sticky top-6">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-xl flex items-center gap-2">
+          <BookOpen className="w-5 h-5 text-green-600" />
+          My Books
+          <Badge variant="secondary" className="ml-auto bg-green-100 text-green-700">
+            {books.length}
+          </Badge>
+        </CardTitle>
+      </CardHeader>
 
-          {/* Right half – intentionally blank */}
-          <div className="hidden pl-5 lg:block lg:w-1/2">
-           <div className="lg:col-span-1">
-            <Card className="border-0 shadow-md bg-gradient-to-br from-green-50 to-yellow-50 h-fit sticky top-6">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-xl flex items-center gap-2">
-                  <BookOpen className="w-5 h-5 text-green-600" />
-                  My Books
-                  <Badge variant="secondary" className="ml-auto bg-green-100 text-green-700">
-                    {myBooks.length}
-                  </Badge>
-                </CardTitle>
-              </CardHeader>
-
-              <CardContent className="space-y-3">
-                {/* Show only first 4 books */}
-                {myBooks.slice(0, 4).map((book, index) => (
-                  <motion.div
-                    key={book.id}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    className="flex gap-3 p-3 bg-white/80 backdrop-blur-sm rounded-xl border border-white/50 shadow-sm hover:shadow-md transition-all duration-300"
-                  >
-                    <img
-                      src={
-                        book.cover_image ||
-                        'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=300&h=400&fit=crop'
-                      }
-                      alt={book.title}
-                      className="w-16 h-20 object-cover rounded-lg shadow-sm"
-                    />
-
-                    <div className="flex-1 min-w-0">
-                      <h4 className="font-semibold text-slate-900 text-sm truncate">
-                        {book.title}
-                      </h4>
-
-                      <div className="flex items-center gap-1 text-xs text-slate-500 mt-1">
-                        <User className="w-3 h-3" />
-                        <span className="truncate">{book.author}</span>
-                      </div>
-
-                      <div className="flex items-center gap-1 text-xs text-slate-500 mt-0.5">
-                        <Calendar className="w-3 h-3" />
-                        <span>{book.publishing_year || 'N/A'}</span>
-                      </div>
-
-                      <div className="flex items-center gap-1 mt-2">
-                        <Badge className="bg-gradient-to-r from-yellow-400 to-green-500 text-white text-xs px-2 py-0.5">
-                          <IndianRupee className="w-3 h-3 mr-0.5" />
-                          {book.sell_price}
-                        </Badge>
-
-                        <Badge
-                          variant="outline"
-                          className={`text-xs capitalize ${
-                            book.status === 'sold'
-                              ? 'border-red-200 text-red-600 bg-red-50'
-                              : 'border-green-200 text-green-600 bg-green-50'
-                          }`}
-                        >
-                          {book.status || 'available'}
-                        </Badge>
-                      </div>
-                    </div>
-                    
-
-                  </motion.div>
-                ))}
-
-                {/* +45 more – UI only */}
-                <div className="pt-3 flex justify-center">
-                  <div
-                    className="
-                      w-1/2
-                      py-2
-                      text-center
-                      text-md
-                      rounded-xl
-                      border border-dashed border-green-300
-                      bg-white/70
-                       font-semibold text-green-700
-                      cursor-default
-                      transition-all duration-300
-                      hover:bg-green-50
-                      hover:border-green-400
-                      hover:text-green-800
-                      hover:shadow-sm
-                    "
-                  >
-                    +45 more
-                  </div>
+      <CardContent className="space-y-3">
+        {books.length > 0 ? (
+          /* Changed slice from (0, 4) to (0, 2) to show only 2 books */
+          books.slice(0, 2).map((book, index) => (
+            <motion.div
+              key={book._id || index}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: index * 0.1 }}
+              className="flex gap-3 p-3 bg-white/80 backdrop-blur-sm rounded-xl border border-white/50 shadow-sm hover:shadow-md transition-all duration-300"
+            >
+              <img
+                src={book.coverImage || 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=300&h=400&fit=crop'}
+                alt={book.title}
+                className="w-16 h-20 object-cover rounded-lg shadow-sm"
+              />
+              <div className="flex-1 min-w-0">
+                <h4 className="font-semibold text-slate-900 text-sm truncate">{book.title}</h4>
+                <div className="flex items-center gap-1 text-xs text-slate-500 mt-1">
+                  <User className="w-3 h-3" />
+                  <span className="truncate">{book.author}</span>
                 </div>
+                <div className="flex items-center gap-1 text-xs text-slate-500 mt-0.5">
+                  <Calendar className="w-3 h-3" />
+                  <span>{book.publishingYear || 'N/A'}</span>
+                </div>
+                <div className="flex items-center gap-1 mt-2">
+                  <Badge className="bg-gradient-to-r from-yellow-400 to-green-500 text-white text-xs px-2 py-0.5">
+                    <IndianRupee className="w-3 h-3 mr-0.5" />
+                    {book.price}
+                  </Badge>
+                </div>
+              </div>
+            </motion.div>
+          ))
+        ) : (
+          <div className="text-center py-6 text-slate-400 text-sm italic">No books listed yet.</div>
+        )}
 
-              </CardContent>
-            </Card>
+        {/* Updated logic: Show +{n} more if length is greater than 2 */}
+        {books.length > 2 && (
+          <div className="pt-3 flex justify-center">
+            <div className="w-1/2 py-2 text-center text-md rounded-xl border border-dashed border-green-300 bg-white/70 font-semibold text-green-700 cursor-default transition-all duration-300 hover:bg-green-50">
+              +{books.length - 2} more
+            </div>
           </div>
-
-          </div>
+        )}
+      </CardContent>
+    </Card>
+  </div>
+</div>
         </div>
-
       </div>
     </div>
   );

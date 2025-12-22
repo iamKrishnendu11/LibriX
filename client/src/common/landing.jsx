@@ -9,7 +9,7 @@ import AboutSection from '@/components/AboutSection'
 import LegacySection from '@/components/LegacySection'
 import Band from '@/components/Band'
 import FAQ from '@/components/Faq'
-import CircularGallery from '@/components/CircularImages'
+// import CircularGallery from '@/components/CircularImages'
 
 
 const landing = () => {
@@ -21,7 +21,7 @@ const landing = () => {
       <Timeline/>
       <LegacySection />
       <Band />
-      <CircularGallery />
+      {/* <CircularGallery /> */}
       <Testimonials/>
       <FAQ />
       <ContactForm/>
