@@ -1,6 +1,6 @@
 // routes/book.routes.js
 import express from "express";
-import { createBook, getMyBooks, updateBook, deleteBook, processOCR } from "../controllers/book.contoller.js";
+import { createBook, getMyBooks, updateBook, deleteBook, processOCR, getBooksForSale} from "../controllers/book.controller.js";
 import { sellerProtect } from "../middlewares/auth.middleware.js";
 import upload from "../../configs/multer.js"; 
 
@@ -14,5 +14,7 @@ router.post("/add", sellerProtect, createBook);
 router.get("/my-books", sellerProtect, getMyBooks);
 router.put("/edit/:id", sellerProtect, updateBook);
 router.delete("/delete/:id", sellerProtect, deleteBook);
+
+router.get("/for-sale", getBooksForSale);
 
 export default router;
