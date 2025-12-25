@@ -61,3 +61,13 @@ export const deleteBook = async (req, res) => {
   await Book.findByIdAndDelete(req.params.id);
   res.status(200).json({ message: "Book removed" });
 };
+
+export const getBooksForSale = async (req, res) => {
+  try {
+    // This only fetches from the Book collection (Sellers)
+    const books = await Book.find().populate('seller', 'shopName'); 
+    res.status(200).json({ success: true, books });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};

@@ -57,7 +57,7 @@ export default function SellerUpload() {
   // --- Real Logic: Fetch Books from Backend ---
 const fetchMyBooks = async () => {
   // Use 'accessToken' if that is what your Login.jsx saves
-  const token = localStorage.getItem('sellerToken'); 
+  const token = localStorage.getItem('accessToken'); 
 
   if (!token) {
     console.warn("No token found for fetching books");
@@ -338,8 +338,9 @@ const handleSubmit = async (e) => {
                             <SelectItem value="fiction">Fiction</SelectItem>
                             <SelectItem value="non-fiction">Non-Fiction</SelectItem>
                             <SelectItem value="self-help">Self-Help</SelectItem>
-                            <SelectItem value="medical">Medical</SelectItem>
+                            <SelectItem value="biography">Biography</SelectItem>
                             <SelectItem value="academic">Academic</SelectItem>
+                            <SelectItem value="science">Science</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>

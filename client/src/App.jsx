@@ -12,9 +12,11 @@ import SellerBids from "./seller/pages/SellerBids.jsx";
 import SellerChat from "./seller/pages/SellerChat.jsx";
 import SellerNotifications from "./seller/pages/SellerNotification.jsx";
 import UserHome from "./buyer/pages/UserHome.jsx";
+import BuyerNotifications from "./buyer/pages/BuyerNotifications.jsx";
 
 
 import SellerProtectedRoute from "./utils/sellerProtectedRoute.jsx";
+import BuyerProtectedRoute from "./utils/buyerProtectedRoute.jsx"
 
 export default function App() {
   return (
@@ -24,6 +26,9 @@ export default function App() {
         <Route path="/" element={<Landing />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+          <Route path="/lender/dashboard" element={<LenderDashboard />} />
+        <Route path="/buyer/notifications" element={<BuyerNotifications />} />  
+          
 
         {/* -------- SELLER PROTECTED ROUTES -------- */}
         <Route element={<SellerProtectedRoute />}>
@@ -31,10 +36,15 @@ export default function App() {
           <Route path="/seller/uploads" element={<SellerUploads />} />
           <Route path="/seller/bids" element={<SellerBids />} />
           <Route path="/seller/chat" element={<SellerChat />} />
-          <Route path="/seller/notification" element={<SellerNotifications />} />
-          <Route path="/lender/dashboard" element={<LenderDashboard />} />
-          <Route path="/buyer/home" element={<UserHome />} />
+          <Route path="/seller/notification" element={<SellerNotifications />} /> 
         </Route>
+
+        {/* -------- BUYER PROTECTED ROUTES -------- */}
+        <Route element={<BuyerProtectedRoute />}>
+         <Route path="/buyer/home" element={<UserHome />} />
+        </Route>
+
+
 
         {/* -------- FALLBACK -------- */}
         <Route path="*" element={<Navigate to="/" replace />} />

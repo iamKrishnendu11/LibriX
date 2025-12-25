@@ -3,22 +3,21 @@ import { motion, useInView, AnimatePresence } from 'framer-motion';
 import { LogIn, Phone, Lock, CheckCircle, AlertCircle, Loader2, Home, Store, Landmark } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Link, useNavigate } from 'react-router-dom'; // Added useNavigate
+import { Link, useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils/index.js';
 
 // CHANGE THIS TO MATCH YOUR BACKEND PORT
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
 
-
 export default function login() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
-  const navigate = useNavigate(); // Hook for redirection
+  const navigate = useNavigate();
 
   const [userType, setUserType] = useState('buyer');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
-  const [serverError, setServerError] = useState(""); // State to hold backend error message
+  const [serverError, setServerError] = useState("");
 
   const [formData, setFormData] = useState({
     phone: '',
@@ -50,7 +49,6 @@ export default function login() {
 
   const validateForm = () => {
     const newErrors = {};
-
     if (!formData.phone.trim()) {
       newErrors.phone = 'Phone number is required';
     } else if (!/^[\d\s\-+()]{10,}$/.test(formData.phone.replace(/\s/g, ''))) {
@@ -59,7 +57,6 @@ export default function login() {
     if (!formData.password.trim()) {
       newErrors.password = 'Password is required';
     }
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -88,9 +85,7 @@ export default function login() {
         throw new Error(data.message || "Login failed");
       }
       
-      // --- SECURE STORAGE ---
-      // Use fallbacks to prevent "undefined" string from being saved
-      localStorage.setItem("sellerToken", data.accessToken);
+      localStorage.setItem("accessToken", data.accessToken);
       localStorage.setItem("user", JSON.stringify(data.user || { name: "User" }));
       localStorage.setItem("userType", userType);
 
@@ -98,8 +93,13 @@ export default function login() {
       
       setTimeout(() => {
         setSubmitStatus(null);
+        // --- UPDATED NAVIGATION LOGIC ---
         if (userType === 'seller') {
           navigate("/seller/dashboard"); 
+        } else if (userType === 'buyer') {
+          navigate("/buyer/home"); // Navigates buyer to home
+        } else if (userType === 'lender') {
+          navigate("/lender/dashboard"); // Navigates lender if applicable
         } else {
           navigate("/"); 
         }
@@ -120,7 +120,6 @@ export default function login() {
 
   return (
     <section className="relative min-h-screen py-32 bg-gradient-to-br from-yellow-50 via-white to-green-50 overflow-hidden">
-      {/* Background Effects */}
       <div className="absolute inset-0">
         <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-yellow-400/50 to-transparent" />
         <div className="absolute top-1/4 left-0 w-96 h-96 bg-yellow-400/10 rounded-full blur-[120px]" />
@@ -129,7 +128,6 @@ export default function login() {
       </div>
 
       <div ref={ref} className="relative z-10 max-w-lg mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -139,20 +137,17 @@ export default function login() {
           <span className="inline-block px-4 py-1.5 text-sm font-medium text-green-600 bg-green-100 rounded-full border border-green-200 mb-6">
             Welcome Back
           </span>
-
           <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
             Sign{" "}
             <span className="bg-gradient-to-r from-yellow-500 to-green-500 bg-clip-text text-transparent">
               In
             </span>
           </h2>
-
           <p className="text-lg text-gray-600">
             Access your account and continue your journey
           </p>
         </motion.div>
 
-        {/* User Type Selection */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -187,7 +182,6 @@ export default function login() {
                     <div className="w-2 h-2 rounded-full bg-gradient-to-r from-yellow-400 to-green-400" />
                   </motion.div>
                 )}
-
                 <div className={`w-10 h-10 rounded-lg flex items-center justify-center mx-auto mb-2 transition-all ${
                   isActive 
                     ? 'bg-gradient-to-r from-yellow-400 to-green-400' 
@@ -195,7 +189,6 @@ export default function login() {
                 }`}>
                   <Icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-gray-600'}`} />
                 </div>
-
                 <h3 className={`text-sm font-semibold ${isActive ? 'text-gray-900' : 'text-gray-700'}`}>
                   {type.label}
                 </h3>
@@ -204,7 +197,6 @@ export default function login() {
           })}
         </motion.div>
 
-        {/* Form */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -212,7 +204,6 @@ export default function login() {
           className="bg-white backdrop-blur-sm border border-gray-200 rounded-3xl p-8 shadow-xl"
         >
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Phone Number */}
             <motion.div 
               className="space-y-2"
               initial={{ opacity: 0, y: 10 }}
@@ -247,7 +238,6 @@ export default function login() {
               </AnimatePresence>
             </motion.div>
 
-            {/* Password */}
             <motion.div 
               className="space-y-2"
               initial={{ opacity: 0, y: 10 }}
@@ -287,7 +277,6 @@ export default function login() {
               </AnimatePresence>
             </motion.div>
 
-            {/* Submit Button */}
             <motion.div 
               className="pt-2"
               initial={{ opacity: 0, y: 10 }}
@@ -312,7 +301,6 @@ export default function login() {
               </motion.div>
             </motion.div>
 
-            {/* Status Message */}
             <AnimatePresence>
               {submitStatus && (
                 <motion.div
@@ -340,7 +328,6 @@ export default function login() {
               )}
             </AnimatePresence>
 
-            {/* Divider */}
             <div className="relative py-4">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-gray-200"></div>
@@ -350,7 +337,6 @@ export default function login() {
               </div>
             </div>
 
-            {/* Register Link */}
             <Link to={createPageUrl('Register')}>
               <Button
                 type="button"
@@ -363,7 +349,6 @@ export default function login() {
           </form>
         </motion.div>
 
-        {/* Footer Text */}
         <motion.p
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : {}}

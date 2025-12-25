@@ -1,3 +1,4 @@
+import BuyerNotifications from "@/buyer/pages/BuyerNotifications";
 import SellerBids from "@/seller/pages/SellerBids";
 
 const pageRoutes = {
@@ -10,7 +11,8 @@ const pageRoutes = {
   SellerBids:'/seller/bids',
   SellerChat:'/seller/chat',
   SellerNotification:'/seller/notification',
-  UserHome:'/buyer/home'
+  UserHome:'/buyer/home',
+  BuyerNotifications:'/buyer/notifications'
 };
 
 // This function converts a page key to a usable URL
