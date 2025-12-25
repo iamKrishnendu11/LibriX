@@ -10,6 +10,7 @@ import LegacySection from '@/components/LegacySection'
 import Band from '@/components/Band'
 import FAQ from '@/components/Faq'
 // import CircularGallery from '@/components/CircularImages'
+import PricingSection from '@/components/PricingSection'
 
 
 const landing = () => {
@@ -21,6 +22,7 @@ const landing = () => {
       <Timeline/>
       <LegacySection />
       <Band />
+      <PricingSection />
       {/* <CircularGallery /> */}
       <Testimonials/>
       <FAQ />

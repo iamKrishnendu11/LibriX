@@ -17,13 +17,13 @@ import { motion } from 'framer-motion';
 import { formatDistanceToNow } from 'date-fns';
 import EmptyState from '@/components/common/EmptyState';
 import { NotificationSkeleton } from '@/components/common/LoadingSkeleton';
+import Navbar from './Navbar';
 
-// ✅ Dummy notifications
 const sampleNotifications = [
   {
     id: '1',
     title: 'New Order Received',
-    message: '📦 New order for "Clean Code" from Amit Kumar. Amount: ₹450',
+    message: 'New order for "Clean Code" from Amit Kumar.',
     type: 'order',
     is_read: false,
     created_date: new Date().toISOString(),
@@ -32,39 +32,30 @@ const sampleNotifications = [
   {
     id: '2',
     title: 'Bid Request Match',
-    message: '🎯 A buyer is looking for "System Design Interview" with budget ₹600. Submit your offer!',
+    message: 'Buyer looking for "System Design Interview" (₹600 budget).',
     type: 'bid',
     is_read: false,
-    created_date: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString()
+    created_date: new Date(Date.now() - 3600000).toISOString()
   },
   {
     id: '3',
     title: 'Payment Received',
-    message: '💰 Payment of ₹380 received for "Design Patterns".',
+    message: '₹380 received for "Design Patterns".',
     type: 'subscription',
     is_read: true,
-    created_date: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString()
+    created_date: new Date(Date.now() - 18000000).toISOString()
   },
   {
     id: '4',
-    title: 'New Message',
-    message: '💬 Priya Sharma sent you a message about "The Pragmatic Programmer".',
-    type: 'chat',
-    is_read: true,
-    created_date: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
+    title: 'Bid Request Match',
+    message: 'Buyer looking for "System Design Interview" (₹600 budget).',
+    type: 'bid',
+    is_read: false,
+    created_date: new Date(Date.now() - 3600000).toISOString()
   },
-  {
-    id: '5',
-    title: 'Order Cancelled',
-    message: '❌ Order for "JavaScript: The Good Parts" was cancelled by the buyer.',
-    type: 'order',
-    is_read: true,
-    created_date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString()
-  }
 ];
 
 export default function SellerNotifications() {
-  // ✅ Using dummy data directly
   const notifications = sampleNotifications;
   const isLoading = false;
 
@@ -79,34 +70,22 @@ export default function SellerNotifications() {
     return icons[type] || Bell;
   };
 
-  const getIconColor = (type) => {
-    const colors = {
-      order: 'bg-blue-100 text-blue-600',
-      subscription: 'bg-green-100 text-green-600',
-      chat: 'bg-purple-100 text-purple-600',
-      bid: 'bg-amber-100 text-amber-600',
-      system: 'bg-slate-100 text-slate-600'
-    };
-    return colors[type] || colors.system;
-  };
-
-  const handleCancelOrder = (orderId) => {
-    console.log('Cancelling order:', orderId);
-  };
-
   const unreadCount = notifications.filter(n => !n.is_read).length;
 
   return (
-    <div className="min-h-screen bg-slate-50 pb-24 md:pb-8">
-      <div className="container mx-auto px-4 py-6">
+    <div className="min-h-screen bg-linear-to-b from-slate-50 to-white">
+      <Navbar />
+      <div className='pt-30' />
+      <div className="max-w-3xl mx-auto px-4 py-10">
         {/* Header */}
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">Notifications</h1>
-            {unreadCount > 0 && (
-              <p className="text-slate-500">{unreadCount} unread notifications</p>
-            )}
+            <h1 className="text-5xl font-bold text-slate-900">Notifications</h1>
+            <p className="text-slate-500 text-md">
+              Stay updated with your activity
+            </p>
           </div>
+
           {unreadCount > 0 && (
             <Button variant="outline" size="sm">
               <CheckCheck className="w-4 h-4 mr-2" />
@@ -115,62 +94,66 @@ export default function SellerNotifications() {
           )}
         </div>
 
+        {/* Content */}
         {isLoading ? (
           <div className="space-y-4">
-            {[1,2,3,4].map(i => <NotificationSkeleton key={i} />)}
+            {[1,2,3].map(i => <NotificationSkeleton key={i} />)}
           </div>
         ) : notifications.length > 0 ? (
           <div className="space-y-3">
-            {notifications.map((notification, index) => {
-              const Icon = getIcon(notification.type);
+            {notifications.map((n, index) => {
+              const Icon = getIcon(n.type);
+
               return (
                 <motion.div
-                  key={notification.id}
+                  key={n.id}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.05 }}
+                  transition={{ delay: index * 0.75 }}
                 >
                   <Card
-                    className={`border-0 shadow-sm hover:shadow-md transition-shadow ${
-                      !notification.is_read
-                        ? 'bg-purple-50/50 border-l-4 border-l-purple-500'
-                        : 'bg-white'
-                    }`}
+                    className={`group relative border transition-all ${
+                      n.is_read
+                        ? 'bg-white'
+                        : 'bg-green-50/40 border-black/20'
+                    } hover:shadow-md`}
                   >
-                    <CardContent className="p-4">
-                      <div className="flex items-start gap-4">
-                        <div className={`p-3 rounded-xl ${getIconColor(notification.type)}`}>
-                          <Icon className="w-5 h-5" />
-                        </div>
+                    {/* Unread dot */}
+                    {!n.is_read && (
+                      <span className="absolute left-3 top-6 h-2 w-2 rounded-full bg-red-500" />
+                    )}
 
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-1">
-                            <h3 className="font-semibold text-slate-900">
-                              {notification.title}
+                    <CardContent className="p-5 flex gap-4">
+                      {/* Icon */}
+                      <div className="mt-1">
+                        <div className="h-10 w-10 rounded-xl bg-slate-100 flex items-center justify-center">
+                          <Icon className="w-7 h-7 text-slate-600" />
+                        </div>
+                      </div>
+
+                      {/* Content */}
+                      <div className="flex-1">
+                        <div className="flex justify-between items-start gap-4">
+                          <div>
+                            <h3 className="font-semibold text-xl text-slate-900">
+                              {n.title}
                             </h3>
-                            {!notification.is_read && (
-                              <Badge className="bg-purple-100 text-purple-700 text-xs">
-                                New
-                              </Badge>
-                            )}
+                            <p className="text-md text-slate-600 mt-1">
+                              {n.message}
+                            </p>
                           </div>
-                          <p className="text-slate-600 text-sm">
-                            {notification.message}
-                          </p>
-                          <div className="flex items-center gap-1 mt-2 text-xs text-slate-400">
-                            <Clock className="w-3 h-3" />
-                            {formatDistanceToNow(
-                              new Date(notification.created_date),
-                              { addSuffix: true }
-                            )}
-                          </div>
+
+                          <span className="text-xs text-slate-400 whitespace-nowrap">
+                            {formatDistanceToNow(new Date(n.created_date), {
+                              addSuffix: true
+                            })}
+                          </span>
                         </div>
 
-                        {/* Action Buttons */}
-                        {notification.type === 'order' &&
-                          !notification.is_read &&
-                          notification.order_id && (
-                            <div className="flex gap-2">
+                        {/* Actions (hover only) */}
+                        <div className="mt-3 flex gap-2 opacity-0 group-hover:opacity-100 transition">
+                          {n.type === 'order' && !n.is_read && (
+                            <>
                               <Button size="sm" className="bg-green-600 hover:bg-green-700">
                                 <Check className="w-4 h-4 mr-1" />
                                 Accept
@@ -179,26 +162,20 @@ export default function SellerNotifications() {
                                 size="sm"
                                 variant="outline"
                                 className="text-red-600 border-red-200 hover:bg-red-50"
-                                onClick={() =>
-                                  handleCancelOrder(notification.order_id)
-                                }
                               >
                                 <X className="w-4 h-4 mr-1" />
                                 Cancel
                               </Button>
-                            </div>
+                            </>
                           )}
 
-                        {notification.type === 'bid' &&
-                          !notification.is_read && (
-                            <Button
-                              size="sm"
-                              className="bg-amber-500 hover:bg-amber-600"
-                            >
+                          {n.type === 'bid' && !n.is_read && (
+                            <Button size="sm" className="bg-green-400 hover:bg-green-600">
                               <Gavel className="w-4 h-4 mr-1" />
                               View Bid
                             </Button>
                           )}
+                        </div>
                       </div>
                     </CardContent>
                   </Card>
@@ -209,8 +186,8 @@ export default function SellerNotifications() {
         ) : (
           <EmptyState
             type="messages"
-            title="No notifications"
-            description="You're all caught up! New notifications will appear here."
+            title="You're all caught up"
+            description="New notifications will appear here."
           />
         )}
       </div>

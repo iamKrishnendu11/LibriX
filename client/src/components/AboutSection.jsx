@@ -53,7 +53,7 @@ const Features = () => {
           </VideoText>
 
           <p className="text-xl text-center text-gray-900 max-w-3xl mx-auto">
-            Comprehensive AI-powered tools to revolutionize your farming operations
+            A smart, modern platform to discover, read, rent, and manage books.
           </p>
         </div>
 
@@ -80,13 +80,12 @@ const Features = () => {
             </div>
 
             <h3 className="text-3xl font-bold text-gray-900 mb-2">
-              AI Reading Intelligence
+              A Living Reading Legacy
             </h3>
 
             <p className="text-gray-600 text-lg flex-grow">
-              Hyper-personalized book discovery powered by AI — understanding
-              your interests, reading pace, and preferences to suggest stories
-              you’ll love.
+              Rooted in the timeless heritage of College Street, celebrating generations
+  of readers, stories, and knowledge passed from one bookshelf to another.
             </p>
 
             <div className="overflow-hidden rounded-2xl mt-6 h-full border border-white/30">
@@ -120,8 +119,9 @@ const Features = () => {
             </h3>
 
             <p className="text-gray-600 text-lg">
-              Get intelligent summaries, reading insights, and mood-based
-              suggestions — helping you choose your next perfect read.
+              Where the wisdom meets modern technology—offering thoughtful
+  reading guidance inspired by generations of booksellers, now seamlessly
+  enhanced to help you discover the right book at the right moment.
             </p>
           </div>
 
@@ -193,9 +193,10 @@ const Features = () => {
             </div>
 
             <p className="text-gray-600 text-lg mt-2">
-              Explore author events, reading challenges, library collaborations,
-              educational initiatives, and exclusive literary experiences —
-              curated inside LibriX.
+              In Kolkata, reading is more than a habit—it is a way of life. From College
+  Street’s bookstalls to evening addas and literary debates, LibriX brings this
+  living culture together through author interactions, reading journeys,
+  educational initiatives, and community-driven literary experiences.
             </p>
           </div>
 

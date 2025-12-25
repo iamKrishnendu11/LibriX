@@ -10,7 +10,10 @@ const pageRoutes = {
   SellerBids:'/seller/bids',
   SellerChat:'/seller/chat',
   SellerNotification:'/seller/notification',
-  UserHome:'/buyer/home'
+  UserHome:'/buyer/home',
+  UserBookDetails:'/buyer/bookdetail',
+  LenderUpload:'/lender/upload',
+  LenderNotification:'/lender/notification',
 };
 
 // This function converts a page key to a usable URL

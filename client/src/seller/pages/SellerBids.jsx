@@ -28,6 +28,7 @@ import {
 import { motion } from 'framer-motion';
 import { format, formatDistanceToNow } from 'date-fns';
 import EmptyState from '@/components/common/EmptyState';
+import Navbar from './Navbar';
 
 // ✅ Dummy bid requests data
 const sampleBidRequests = [
@@ -116,73 +117,131 @@ export default function SellerBids() {
   return (
     <div className="min-h-screen bg-slate-50 pb-24 md:pb-8">
       {/* Header */}
-      <div className="bg-gradient-to-br from-amber-500 via-orange-500 to-red-500 text-white">
-        <div className="container mx-auto px-4 py-8 md:py-12">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="max-w-2xl"
-          >
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
-                <Gavel className="w-6 h-6" />
-              </div>
-              <h1 className="text-2xl md:text-3xl font-bold">Bid Requests</h1>
-            </div>
-            <p className="text-amber-100">
-              Buyers are looking for these books. Submit your offer to win the sale!
-            </p>
-          </motion.div>
+      <Navbar />
+
+      {/* HERO */}
+      <div className='md:pt-30' />
+      <div className="bg-gradient-to-br rounded-[2.5rem] md:w-[80%] mx-auto from-yellow-400 to-green-300 text-black pt-[30px] w-full">
+  <div className="mx-auto w-[75%] max-w-[1100px] px-4 py-12">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 1.5 }}
+      className="text-center"
+    >
+      <div className="flex items-center justify-center gap-3 mb-4">
+        <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
+          <Gavel className="w-6 h-6" />
         </div>
+        <h1 className="text-4xl md:text-4xl font-bold">
+          Bid Requests
+        </h1>
       </div>
 
-      <div className="container mx-auto px-4 py-6">
-        {/* Stats */}
-        <div className="grid grid-cols-3 gap-4 mb-8">
-          <Card className="border-0 shadow-sm">
-            <CardContent className="p-4 text-center">
-              <div className="text-2xl font-bold">{bidRequests.length}</div>
-              <div className="text-sm text-slate-500">Open Requests</div>
-            </CardContent>
-          </Card>
-          <Card className="border-0 shadow-sm">
-            <CardContent className="p-4 text-center">
-              <div className="text-2xl font-bold text-indigo-600">
-                {bidRequests.filter(r => r.my_offer).length}
-              </div>
-              <div className="text-sm text-slate-500">My Offers</div>
-            </CardContent>
-          </Card>
-          <Card className="border-0 shadow-sm">
-            <CardContent className="p-4 text-center">
-              <div className="text-2xl font-bold text-green-600">2</div>
-              <div className="text-sm text-slate-500">Won Bids</div>
-            </CardContent>
-          </Card>
+      <p className="text-black/70">
+        Buyers are looking for these books. Submit your offer to win the sale!
+      </p>
+    </motion.div>
+  </div>
+</div>
+
+
+
+
+      {/* MAIN CONTENT — 80% */}
+      <div className="mx-auto w-[80%] px-4 py-10">
+
+        {/* STATS */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 place-items-center">
+          
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.5, delay: 0 }}
+            className="w-full"
+          >
+            <Card className="border-0 shadow-md w-full h-[140px] flex items-center justify-center">
+              <CardContent className="text-center">
+                <div className="text-7xl font-bold">
+                  {bidRequests.length}
+                </div>
+                <div className="text-sm text-slate-500 mt-1">
+                  Open Requests
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.15 }}
+            className="w-full"
+          >
+            <Card className="border-0 shadow-sm w-full h-[140px] flex items-center justify-center">
+              <CardContent className="text-center">
+                <div className="text-7xl font-bold">
+                  {bidRequests.filter(r => r.my_offer).length}
+                </div>
+                <div className="text-sm text-slate-500 mt-1">
+                  My Offers
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="w-full"
+          >
+            <Card className="border-0 shadow-sm w-full h-[140px] flex items-center justify-center">
+              <CardContent className="text-center">
+                <div className="text-7xl font-bold">
+                  2
+                </div>
+                <div className="text-sm text-slate-500 mt-1">
+                  Won Bids
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+
         </div>
 
-        {/* Bid List */}
-        <div className="space-y-4">
+
+        {/* BID LIST */}
+        <div className="space-y-6">
           {bidRequests.map((request, index) => (
             <motion.div
               key={request.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
+              initial={{
+                opacity: 0,
+                x: index % 2 === 0 ? -80 : 80
+              }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 2, delay: index * 0.15 }}
             >
               <Card className="border-0 shadow-md hover:shadow-lg">
                 <CardContent className="p-6">
                   <div className="flex flex-col md:flex-row justify-between gap-4">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-2">
-                        {getStatusBadge(request.status, request.my_offer)}
                         <span className="text-xs text-slate-400">
-                          {formatDistanceToNow(new Date(request.created_date), { addSuffix: true })}
+                          {formatDistanceToNow(
+                            new Date(request.created_date),
+                            { addSuffix: true }
+                          )}
                         </span>
                       </div>
 
-                      <h3 className="text-lg font-semibold">{request.book_title}</h3>
-                      <p className="text-sm text-slate-500">by {request.author}</p>
+                      <h3 className="text-2xl font-semibold">
+                        {request.book_title}
+                      </h3>
+                      <p className="text-sm text-slate-500">
+                        by {request.author}
+                      </p>
 
                       <p className="text-sm text-slate-600 mt-2">
                         "{request.description}"
@@ -194,22 +253,28 @@ export default function SellerBids() {
                         </span>
                         <span className="flex items-center gap-1">
                           <Clock className="w-4 h-4" />
-                          Expires {format(new Date(request.expires_at), 'MMM d')}
+                          Expires {format(
+                            new Date(request.expires_at),
+                            "MMM d"
+                          )}
                         </span>
                       </div>
                     </div>
 
                     <div className="text-right space-y-3">
                       <div>
-                        <div className="text-sm text-slate-500">Max Budget</div>
-                        <div className="text-2xl font-bold text-amber-600 flex items-center justify-end">
-                          <IndianRupee className="w-5 h-5" /> {request.max_budget}
+                        <div className="text-sm text-slate-500">
+                          Max Budget
+                        </div>
+                        <div className="text-2xl font-bold text-green-500 flex items-center justify-end">
+                          <IndianRupee className="w-5 h-5" />
+                          {request.max_budget}
                         </div>
                       </div>
 
                       {!request.my_offer && (
                         <Button
-                          className="bg-amber-500 hover:bg-amber-600"
+                          className="bg-green-500 hover:bg-green-400 hover:text-black mr-5"
                           onClick={() => {
                             setSelectedRequest(request);
                             setOfferDialog(true);
@@ -220,7 +285,7 @@ export default function SellerBids() {
                         </Button>
                       )}
 
-                      <Button variant="outline" size="sm">
+                      <Button variant="outline" size="sm" >
                         <MessageCircle className="w-4 h-4 mr-2" />
                         Chat with Buyer
                       </Button>
@@ -241,7 +306,7 @@ export default function SellerBids() {
         </div>
       </div>
 
-      {/* Offer Dialog */}
+      {/* OFFER DIALOG */}
       <Dialog open={offerDialog} onOpenChange={setOfferDialog}>
         <DialogContent>
           <DialogHeader>
@@ -254,12 +319,16 @@ export default function SellerBids() {
                 placeholder="Your price"
                 type="number"
                 value={offerData.price}
-                onChange={(e) => setOfferData({ ...offerData, price: e.target.value })}
+                onChange={(e) =>
+                  setOfferData({ ...offerData, price: e.target.value })
+                }
               />
 
               <Select
                 value={offerData.condition}
-                onValueChange={(v) => setOfferData({ ...offerData, condition: v })}
+                onValueChange={(v) =>
+                  setOfferData({ ...offerData, condition: v })
+                }
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Condition" />
@@ -274,7 +343,9 @@ export default function SellerBids() {
               <Input
                 placeholder="Message (optional)"
                 value={offerData.message}
-                onChange={(e) => setOfferData({ ...offerData, message: e.target.value })}
+                onChange={(e) =>
+                  setOfferData({ ...offerData, message: e.target.value })
+                }
               />
 
               <Button

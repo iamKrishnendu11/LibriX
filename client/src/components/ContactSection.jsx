@@ -92,7 +92,7 @@ export default function ContactForm() {
   };
 
   return (
-    <section className="relative py-24 bg-white overflow-hidden">
+    <section id='help' className="relative py-24 bg-white overflow-hidden">
       {/* Background Effects */}
       <div className="absolute inset-0">
         <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-yellow-400/50 to-transparent" />

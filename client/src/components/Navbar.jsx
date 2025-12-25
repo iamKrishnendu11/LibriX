@@ -33,15 +33,15 @@ export default function Navbar() {
 
   const links = [
     { id: "home", label: "Home", href: "#home", icon: <Home size={16} /> },
-    { id: "shop", label: "Shop", href: "#shop", icon: <ShoppingBag size={16} /> },
-    { id: "about", label: "About", href: "#about", icon: <Info size={16} /> },
+    { id: "about", label: "About", href: "#features", icon: <Info size={16} /> },
+    { id: "pricing", label: "Pricing", href: "#pricing", icon: <ShoppingBag size={16} /> },
     { id: "help", label: "Help", href: "#help", icon: <HelpCircle size={16} /> },
   ];
 
   const mobileMenuItems = [
     { label: "Home", icon: <Home size={20} />, href: "#home" },
-    { label: "Shop", icon: <ShoppingBag size={20} />, href: "#shop" },
-    { label: "About", icon: <Info size={20} />, href: "#about" },
+    { label: "About", icon: <Info size={20} />, href: "#features" },
+    { label: "Pricing", icon: <ShoppingBag size={20} />, href: "#pricing" },
     { label: "Help", icon: <HelpCircle size={20} />, href: "#help" },
   ];
 
