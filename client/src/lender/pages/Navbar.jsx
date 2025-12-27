@@ -78,7 +78,8 @@ export default function Navbar() {
 
             {/* ================= RIGHT : ICONS ================= */}
             <div className="flex items-center gap-4">
-              <button className="relative p-2 rounded-xl hover:bg-slate-100 transition">
+              <button onClick={() => navigateTo("/lender/notification")}
+               className="relative p-2 rounded-xl hover:bg-slate-100 transition">
                 <Bell className="w-5 h-5 text-slate-700" />
                 <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full" />
               </button>

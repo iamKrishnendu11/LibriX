@@ -7,7 +7,7 @@ const axiosSeller = axios.create({
 // ✅ ALWAYS attach latest token
 axiosSeller.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("sellerAccessToken");
 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;

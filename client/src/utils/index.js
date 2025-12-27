@@ -1,6 +1,7 @@
 
 
 
+
 const pageRoutes = {
   Landing: '/',
   Register:'/register',
@@ -17,6 +18,7 @@ const pageRoutes = {
   LenderBooks:'/lender/books',
   BookDetails:'/buyer/book-details/:bookId',
   LendBookDetails:'/buyer/lendBook-details/:bookId',
+  LenderNotifications:'/lender/notification',
 };
 
 // This function converts a page key to a usable URL

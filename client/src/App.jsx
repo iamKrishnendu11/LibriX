@@ -14,6 +14,7 @@ import SellerNotification from "./seller/pages/SellerNotification.jsx";
 import LenderDashboard from "./lender/pages/Dashboard.jsx";
 import LenderUpload from "./lender/pages/LenderUpload.jsx";
 import LenderBooks from "./lender/pages/UploadedBooks.jsx"
+import LenderNotification from "./lender/pages/LenderNotifications.jsx";
 
 import UserHome from "./buyer/pages/UserHome.jsx";
 import BuyerNotification from "./buyer/pages/BuyerNotifications.jsx";
@@ -46,6 +47,7 @@ export default function App() {
           <Route path="/lender/dashboard" element={<LenderDashboard />} />
           <Route path="/lender/upload" element={<LenderUpload />} />
           <Route path="/lender/books" element={<LenderBooks />} />
+          <Route path="/lender/notification" element={<LenderNotification />} />
         </Route>
 
         {/* ---------- SELLER ROUTES (WITH SOCKET) ---------- */}

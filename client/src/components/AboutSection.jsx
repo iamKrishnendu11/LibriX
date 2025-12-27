@@ -155,19 +155,41 @@ const Features = () => {
         {/* Feature 4 */}
         <motion.div
           variants={cardVariants}
-          className="md:col-span-1 p-8 bg-gradient-to-br from-green-200 to-yellow-100 backdrop-blur-lg border border-white/30 rounded-3xl hover:border-amber-400/50 transition-all duration-300 hover:-translate-y-1 group text-center"
+          whileTap={{ scale: 0.97 }}
+          className="md:col-span-1 p-8 bg-gradient-to-br from-green-200 to-yellow-100 backdrop-blur-lg 
+                    border border-white/30 rounded-3xl hover:border-amber-400/50 
+                    transition-all duration-300 hover:-translate-y-1 group 
+                    text-center cursor-pointer"
         >
-          <div className="mb-4">
-            <div className="bg-gray-400/60 p-4 rounded-full inline-block group-hover:rotate-45 transition-transform">
-              <ArrowUpRight />
+          <a
+            href="https://book-reccomendation.onrender.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block h-full w-full"
+          >
+            {/* Arrow */}
+            <div className="mb-4 flex justify-center">
+              <div className="bg-gray-400/60 p-4 rounded-full inline-block 
+                              group-hover:rotate-45 transition-transform">
+                <ArrowUpRight />
+              </div>
             </div>
-          </div>
 
-          <div className="text-6xl mb-3 group-hover:scale-110 transition-transform">👥</div>
+            {/* Icon */}
+            <div className="text-6xl mb-3 group-hover:scale-110 transition-transform">
+              📚
+            </div>
 
-          <h3 className="text-xl font-bold text-gray-900">
-            Reader Community
-          </h3>
+            {/* Title */}
+            <h3 className="text-md font-bold text-gray-900">
+              Book    Recommendations
+            </h3>
+
+            {/* Optional subtitle */}
+            <p className="text-sm text-gray-700 mt-2">
+              Personalized reads just for you
+            </p>
+          </a>
         </motion.div>
       </motion.div>
 
