@@ -20,6 +20,7 @@ import UserHome from "./buyer/pages/UserHome.jsx";
 import BuyerNotification from "./buyer/pages/BuyerNotifications.jsx";
 import BookDetails from "./buyer/pages/BookDetails.jsx";
 import LendBookDetails from "./buyer/pages/LendBookDetails.jsx";
+import BuyerOrders from "./buyer/pages/myOrders.jsx";
 
 import SellerProtectedRoute from "./utils/sellerProtectedRoute.jsx";
 import BuyerProtectedRoute from "./utils/buyerProtectedRoute.jsx";
@@ -79,6 +80,7 @@ export default function App() {
           <Route path="/buyer/home" element={<UserHome />} />
           <Route path="/buyer/book-details/:bookId" element={<BookDetails />} />
           <Route path="/buyer/lendBook-details/:bookId" element={<LendBookDetails />} />
+          <Route path='/buyer/orders' element={<BuyerOrders />} />
           <Route
             path="/buyer/notification"
             element={<BuyerNotification />}

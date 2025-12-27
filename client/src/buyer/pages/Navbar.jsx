@@ -1,30 +1,39 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate, Link } from "react-router-dom"; // Added Link for navigation
-import { Menu, X, Bell, User, LogOut, Settings } from "lucide-react"; // Added new icons
+import { useNavigate } from "react-router-dom";
+import {
+  Menu,
+  X,
+  Bell,
+  User,
+  LogOut,
+  Settings,
+  Home,
+  Package,
+} from "lucide-react";
+
 import DynamicNavigation from "@/components/lightswind/dynamic-navigation";
-import { Home, Gavel, Package, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Logo from "@/assets/logo.png";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isProfileOpen, setIsProfileOpen] = useState(false); // State for dropdown
-  
-  const navigate = useNavigate();
-  const dropdownRef = useRef(null); // Ref to handle clicking outside
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
 
-  // Handle scroll effect
+  const navigate = useNavigate();
+  const dropdownRef = useRef(null);
+
+  /* ================= Scroll Effect ================= */
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close dropdown when clicking outside
+  /* ================= Click Outside Dropdown ================= */
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
         setIsProfileOpen(false);
       }
     };
@@ -32,20 +41,26 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  /* 🔥 Logout Functionality */
+  /* ================= Logout ================= */
   const handleLogout = () => {
-    // 1. Clear local storage/session storage
-    localStorage.removeItem("token"); // Adjust based on your auth logic
-    // 2. Redirect to login or home
+    localStorage.removeItem("token");
     navigate("/login");
-    console.log("User logged out");
   };
 
+  /* ================= NAV LINKS ================= */
   const links = [
-    { id: "home", label: "Home", href: "/seller/dashboard", icon: <Home /> },
-    { id: "bidding", label: "Reverse Bidding", href: "/seller/bidding", icon: <Gavel /> },
-    { id: "orders", label: "My Orders", href: "/seller/orders", icon: <Package /> },
-    { id: "books", label: "Books", href: "/seller/books", icon: <BookOpen /> },
+    {
+      id: "home",
+      label: "Home",
+      path: "/buyer/home",
+      icon: <Home />,
+    },
+    {
+      id: "orders",
+      label: "My Orders",
+      path: "/buyer/orders",
+      icon: <Package />,
+    },
   ];
 
   return (
@@ -63,26 +78,37 @@ export default function Navbar() {
           }`}
         >
           <div className="flex items-center justify-between px-6 py-4">
-            
+
             {/* ================= LEFT : LOGO ================= */}
-            <div className="flex items-center gap-3">
-              <img src={Logo} alt="Logo" className="w-40 h-10 object-contain" />
+            <div
+              className="flex items-center gap-3 cursor-pointer"
+              onClick={() => navigate("/buyer/home")}
+            >
+              <img
+                src={Logo}
+                alt="Logo"
+                className="w-40 h-10 object-contain"
+              />
             </div>
 
-            {/* ================= CENTER : DYNAMIC NAV ================= */}
+            {/* ================= CENTER : DESKTOP NAV ================= */}
             <div className="hidden md:flex items-center whitespace-nowrap">
               <DynamicNavigation
                 links={links}
                 theme="light"
                 glowIntensity={4}
-                onLinkClick={(id) => console.log("Clicked:", id)}
+                onLinkClick={(id) => {
+                  const link = links.find((l) => l.id === id);
+                  if (link) navigate(link.path);
+                }}
                 className="flex-nowrap bg-gradient-to-br from-green-200 to-yellow-100 backdrop-blur-lg border"
               />
             </div>
 
             {/* ================= RIGHT : ICONS ================= */}
             <div className="flex items-center gap-4">
-              {/* Notification */}
+
+              {/* Notifications */}
               <button
                 onClick={() => navigate("/buyer/notification")}
                 className="relative p-2 rounded-xl hover:bg-slate-100 transition"
@@ -91,38 +117,48 @@ export default function Navbar() {
                 <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full" />
               </button>
 
-              {/* Profile Dropdown Container */}
+              {/* Profile Dropdown */}
               <div className="relative" ref={dropdownRef}>
                 <button
-                  onClick={() => setIsProfileOpen(!isProfileOpen)}
+                  onClick={() => setIsProfileOpen((prev) => !prev)}
                   className={`p-2 rounded-xl transition ${
-                    isProfileOpen ? "bg-slate-100" : "hover:bg-slate-100"
+                    isProfileOpen
+                      ? "bg-slate-100"
+                      : "hover:bg-slate-100"
                   }`}
                 >
                   <User className="w-5 h-5 text-slate-700" />
                 </button>
 
-                {/* Dropdown Menu */}
                 {isProfileOpen && (
                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-slate-100 py-2 z-[60] animate-in fade-in zoom-in duration-200">
                     <button
-                      onClick={() => { navigate("/profile"); setIsProfileOpen(false); }}
-                      className="w-full flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition"
+                      onClick={() => {
+                        navigate("/profile");
+                        setIsProfileOpen(false);
+                      }}
+                      className="w-full flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50"
                     >
                       <User className="w-4 h-4" />
                       Profile
                     </button>
+
                     <button
-                      onClick={() => { navigate("/settings"); setIsProfileOpen(false); }}
-                      className="w-full flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition"
+                      onClick={() => {
+                        navigate("/settings");
+                        setIsProfileOpen(false);
+                      }}
+                      className="w-full flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50"
                     >
                       <Settings className="w-4 h-4" />
                       Settings
                     </button>
+
                     <hr className="my-1 border-slate-100" />
+
                     <button
                       onClick={handleLogout}
-                      className="w-full flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition"
+                      className="w-full flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50"
                     >
                       <LogOut className="w-4 h-4" />
                       Logout
@@ -131,9 +167,9 @@ export default function Navbar() {
                 )}
               </div>
 
-              {/* Mobile menu toggle */}
+              {/* Mobile Toggle */}
               <button
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                onClick={() => setIsMobileMenuOpen((prev) => !prev)}
                 className="md:hidden p-2 rounded-xl hover:bg-slate-100"
               >
                 {isMobileMenuOpen ? <X /> : <Menu />}
@@ -145,13 +181,16 @@ export default function Navbar() {
           {isMobileMenuOpen && (
             <div className="md:hidden border-t px-4 py-3 space-y-2">
               {links.map((item) => (
-                <a
+                <button
                   key={item.id}
-                  href={item.href}
-                  className="block px-4 py-3 rounded-lg text-slate-700 hover:bg-slate-100"
+                  onClick={() => {
+                    navigate(item.path);
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className="w-full text-left px-4 py-3 rounded-lg text-slate-700 hover:bg-slate-100"
                 >
                   {item.label}
-                </a>
+                </button>
               ))}
             </div>
           )}

@@ -3,7 +3,8 @@ import {
   placeOrder, 
   handleOrderAction, 
   getBuyerNotifications,
-  getSellerNotifications
+  getSellerNotifications,
+  getMyOrders // ✅ ADD THIS IMPORT
 } from "../controllers/order.controller.js";
 import { buyerProtect } from "../middlewares/buyerAuth.middleware.js";
 import { sellerProtect } from "../middlewares/sellerAuth.middleware.js";
@@ -13,7 +14,10 @@ const router = express.Router();
 router.post("/buy", buyerProtect, placeOrder);
 router.post("/seller-action", sellerProtect, handleOrderAction);
 
-// ✅ ADD THIS ROUTE: Frontend needs this to show notifications
+// ✅ NEW ROUTE: Fetch all purchase and rental orders for the buyer
+router.get("/my-orders", buyerProtect, getMyOrders);
+
+// ✅ EXISTING ROUTES: Notifications
 router.get("/seller/notifications", sellerProtect, getSellerNotifications);
 router.get("/buyer/notifications", buyerProtect, getBuyerNotifications);
 
