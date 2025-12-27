@@ -1,3 +1,4 @@
+import LenderOrders from "@/lender/pages/LenderOrderHistory.jsx";
 
 
 
@@ -21,6 +22,7 @@ const pageRoutes = {
   LendBookDetails:'/buyer/lendBook-details/:bookId',
   LenderNotifications:'/lender/notification',
   BuyerOrders:'/buyer/orders',
+  LenderOrders:'/lender/orders'
 };
 
 // This function converts a page key to a usable URL

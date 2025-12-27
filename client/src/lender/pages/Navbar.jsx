@@ -38,7 +38,7 @@ export default function Navbar() {
   const links = [
     { id: "home", label: "Dashboard", href: "/lender/dashboard", icon: <Home /> },
     { id: "bidding", label: "My Upload", href: "/lender/books", icon: <Gavel /> },
-    { id: "orders", label: "My Orders", href: "/seller/orders", icon: <Package /> },
+    { id: "orders", label: "My Orders", href: "/lender/orders", icon: <Package /> },
     { id: "books", label: "Upload books", href: "/lender/upload", icon: <BookOpen /> }
   ];
 
