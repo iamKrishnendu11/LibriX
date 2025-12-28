@@ -72,14 +72,18 @@ export default function login() {
     setServerError("");
 
     try {
-      const response = await fetch(`${API_URL}/${userType}/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          phone: formData.phone,
-          password: formData.password
-        }),
-      });
+     const response = await fetch(`${API_URL}/${userType}/login`, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  credentials: "include",   // 🔥 IMPORTANT
+  body: JSON.stringify({
+    phone: formData.phone,
+    password: formData.password
+  })
+});
+
 
       // ✅ Parse the response body first
       const data = await response.json();
