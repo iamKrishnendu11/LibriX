@@ -49,4 +49,9 @@ export const initSocket = (role) => {
   return socket;
 };
 
-export const getSocket = () => socket;
+// Accept an optional "role" and auto-initialize the socket when needed.
+export const getSocket = (role) => {
+  if (!socket && role) return initSocket(role);
+  if (socket && role && currentRole !== role) return initSocket(role);
+  return socket;
+};
