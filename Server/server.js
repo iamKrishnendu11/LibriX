@@ -48,7 +48,14 @@ app.use(
 );
 
 // IMPORTANT: handle preflight requests
-app.options("*", cors());
+app.use((req, res, next) => {
+  if (req.method === "OPTIONS") {
+    res.sendStatus(204);
+  } else {
+    next();
+  }
+});
+
 
 /* ------------------ MIDDLEWARE ------------------ */
 app.use(express.json());
