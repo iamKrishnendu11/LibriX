@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const lenderAxios = axios.create({
-  baseURL: "http://localhost:3000/api",
+  baseURL: "https://librix-03l6.onrender.com/api",
 });
 
 lenderAxios.interceptors.request.use((config) => {

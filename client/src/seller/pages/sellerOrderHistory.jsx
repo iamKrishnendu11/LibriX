@@ -27,10 +27,10 @@ export default function SellerOrders() {
 
       // Fetch standard sales and bidding offers simultaneously
       const [salesRes, bidsRes] = await Promise.all([
-        axiosSeller.get("http://localhost:3000/api/orders/seller/all-orders", {
+        axiosSeller.get("https://librix-03l6.onrender.com/api/orders/seller/all-orders", {
           headers: { Authorization: `Bearer ${token}` }
         }),
-        axiosSeller.get("http://localhost:3000/api/bids/seller/accepted-offers", { // Create this in bid controller
+        axiosSeller.get("https://librix-03l6.onrender.com/api/bids/seller/accepted-offers", { // Create this in bid controller
           headers: { Authorization: `Bearer ${token}` }
         })
       ]);

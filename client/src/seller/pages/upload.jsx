@@ -64,7 +64,7 @@ const fetchMyBooks = async () => {
   }
 
   try {
-    const response = await fetch('http://localhost:3000/api/books/my-books', {
+    const response = await fetch('https://librix-03l6.onrender.com/api/books/my-books', {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}` // Ensure there is a space after Bearer
@@ -156,7 +156,7 @@ const fetchMyBooks = async () => {
     const formDataToSend = new FormData();
     formDataToSend.append('image', file);
     try {
-      const response = await fetch('http://localhost:3000/api/ocr/process', {
+      const response = await fetch('https://librix-03l6.onrender.com/api/ocr/process', {
         method: 'POST', body: formDataToSend,
       });
       if (!response.ok) throw new Error("OCR processing failed");
@@ -183,7 +183,7 @@ const handleSubmit = async (e) => {
   const token = localStorage.getItem('sellerAccessToken'); 
 
   try {
-    const response = await fetch('http://localhost:3000/api/books/add', {
+    const response = await fetch('https://librix-03l6.onrender.com/api/books/add', {
       method: 'POST',
       headers: { 
         'Content-Type': 'application/json',

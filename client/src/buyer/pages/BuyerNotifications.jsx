@@ -27,7 +27,7 @@ export default function BuyerNotifications() {
 
     try {
       const res = await buyerAxios.get(
-        "http://localhost:3000/api/orders/buyer/notifications",
+        "https://librix-03l6.onrender.com/api/orders/buyer/notifications",
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
@@ -52,7 +52,7 @@ export default function BuyerNotifications() {
   // ---------------- HANDLE OFFER RESPONSE ----------------
   const handleOfferAction = async (notification, action) => {
     try {
-      const res = await buyerAxios.post("http://localhost:3000/api/bids/respond-offer", {
+      const res = await buyerAxios.post("https://librix-03l6.onrender.com/api/bids/respond-offer", {
         offerId: notification.orderId,
         action: action
       });

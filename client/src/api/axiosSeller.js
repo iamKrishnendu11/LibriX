@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosSeller = axios.create({
-  baseURL: "http://localhost:3000/api",
+  baseURL: "https://librix-03l6.onrender.com/api",
 });
 
 // ✅ ALWAYS attach latest token

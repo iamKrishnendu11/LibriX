@@ -104,7 +104,7 @@ export default function LenderUpload() {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      const response = await fetch('http://localhost:3000/api/lend-books/upload', {
+      const response = await fetch('https://librix-03l6.onrender.com/api/lend-books/upload', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

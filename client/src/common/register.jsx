@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useNavigate } from 'react-router-dom'; // Added useNavigate
 
 // CHANGE THIS TO MATCH YOUR BACKEND PORT
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
+const API_URL = import.meta.env.VITE_API_URL || "https://librix-03l6.onrender.com/api";
 
 export default function Register() {
   const ref = useRef(null);

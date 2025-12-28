@@ -54,10 +54,10 @@ export default function SellerDashboard() {
 
       // FETCH ALL DATA STREAMS
       const [booksRes, salesRes, bidsWinsRes, openBidsRes] = await Promise.all([
-        axios.get('http://localhost:3000/api/books/my-books', config),
-        axios.get('http://localhost:3000/api/orders/seller/all-orders', config),
-        axios.get('http://localhost:3000/api/bids/seller/accepted-offers', config),
-        axios.get('http://localhost:3000/api/bids/all', config)
+        axios.get('https://librix-03l6.onrender.com/api/books/my-books', config),
+        axios.get('https://librix-03l6.onrender.com/api/orders/seller/all-orders', config),
+        axios.get('https://librix-03l6.onrender.com/api/bids/seller/accepted-offers', config),
+        axios.get('https://librix-03l6.onrender.com/api/bids/all', config)
       ]);
 
       // 1. SET BOOKS

@@ -23,7 +23,7 @@ export default function LenderOrders() {
       const token = localStorage.getItem("lenderAccessToken");
       if (!token) return;
 
-      const res = await axios.get("http://localhost:3000/api/rent-orders/lender/orders", {
+      const res = await axios.get("https://librix-03l6.onrender.com/api/rent-orders/lender/orders", {
         headers: { Authorization: `Bearer ${token}` }
       });
 

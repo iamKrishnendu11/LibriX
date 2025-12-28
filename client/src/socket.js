@@ -30,7 +30,7 @@ export const initSocket = (role) => {
 
   currentRole = role;
 
-  socket = io("http://localhost:3000", {
+  socket = io("https://librix-03l6.onrender.com", {
     transports: ["websocket"],
     auth: { token },
     reconnection: true,

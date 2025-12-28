@@ -60,7 +60,7 @@ export default function LendBookDetails() {
       }
 
       const response = await buyerAxios.post(
-        'http://localhost:3000/api/rent-orders/rent', 
+        'https://librix-03l6.onrender.com/api/rent-orders/rent', 
         { 
           bookId: book._id, 
           durationWeeks: selectedWeeks 

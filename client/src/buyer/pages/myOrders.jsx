@@ -34,8 +34,8 @@ export default function BuyerOrders() {
 
       // Fetching both regular orders and accepted bidding offers
       const [ordersRes, offersRes] = await Promise.all([
-        buyerAxios.get('http://localhost:3000/api/orders/my-orders'),
-        buyerAxios.get('http://localhost:3000/api/bids/my-accepted-offers')
+        buyerAxios.get('https://librix-03l6.onrender.com/api/orders/my-orders'),
+        buyerAxios.get('https://librix-03l6.onrender.com/api/bids/my-accepted-offers')
       ]);
 
       const formattedOrders = [

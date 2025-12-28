@@ -51,7 +51,7 @@ export default function SellerBids() {
   useEffect(() => {
     const fetchBids = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/bids/all');
+        const response = await axios.get('https://librix-03l6.onrender.com/api/bids/all');
         if (response.data.success) {
           setBidRequests(response.data.bids);
         }
@@ -100,7 +100,7 @@ export default function SellerBids() {
       }
 
       const response = await axios.post(
-        'http://localhost:3000/api/bids/create-offer',
+        'https://librix-03l6.onrender.com/api/bids/create-offer',
         formData,
         {
           headers: {

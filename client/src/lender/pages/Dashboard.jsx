@@ -38,10 +38,10 @@ export default function LenderDashboard() {
 
       // ✅ Fetching both orders and aggregated analytics
       const [ordersRes, analyticsRes] = await Promise.all([
-      lenderAxios.get("http://localhost:3000/api/rent-orders/lender/orders", {
+      lenderAxios.get("https://librix-03l6.onrender.com/api/rent-orders/lender/orders", {
           headers: { Authorization: `Bearer ${token}` }
         }),
-        lenderAxios.get("http://localhost:3000/api/rent-orders/lender/analytics", {
+        lenderAxios.get("https://librix-03l6.onrender.com/api/rent-orders/lender/analytics", {
           headers: { Authorization: `Bearer ${token}` }
         })
       ]);

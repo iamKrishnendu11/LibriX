@@ -28,7 +28,7 @@ connectCloudinary();
 
 /* ------------------ MIDDLEWARE ------------------ */
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: "https://librix-eta.vercel.app/",
   credentials: true
 }));
 app.use(express.json());

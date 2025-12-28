@@ -26,7 +26,7 @@ export default function LenderNotifications() {
     const fetchNotifications = async () => {
       try {
         // Replace with your actual API endpoint
-        const response = await lenderAxios.get('http://localhost:3000/api/rent-orders/lender/notifications', {
+        const response = await lenderAxios.get('https://librix-03l6.onrender.com/api/rent-orders/lender/notifications', {
           withCredentials: true // If using cookies/sessions
         });
         setNotifications(response.data);
@@ -62,7 +62,7 @@ export default function LenderNotifications() {
 
   const markAllAsRead = async () => {
     try {
-      await lenderAxios.put('http://localhost:3000/api/notifications/mark-all-read', {}, { withCredentials: true });
+      await lenderAxios.put('https://librix-03l6.onrender.com/api/notifications/mark-all-read', {}, { withCredentials: true });
       setNotifications(prev => prev.map(n => ({ ...n, isRead: true })));
     } catch (error) {
       console.error("Error marking as read:", error);

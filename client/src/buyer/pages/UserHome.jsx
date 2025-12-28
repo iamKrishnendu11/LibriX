@@ -47,7 +47,7 @@ export default function BuyerHome() {
     const fetchSaleBooks = async () => {
       try {
         setIsLoading(true);
-        const response = await buyerAxios.get('http://localhost:3000/api/books/for-sale');
+        const response = await buyerAxios.get('https://librix-03l6.onrender.com/api/books/for-sale');
         if (response.data.success) setSaleBooks(response.data.books);
       } catch (error) {
         console.error("Error fetching books:", error);
@@ -66,7 +66,7 @@ export default function BuyerHome() {
     const fetchRentBooks = async () => {
       try {
         setIsLoading(true);
-        const response = await buyerAxios.get('http://localhost:3000/api/lend-books');
+        const response = await buyerAxios.get('https://librix-03l6.onrender.com/api/lend-books');
         if (response.data.success) {
           setRentBooks(response.data.books);
         }
@@ -106,7 +106,7 @@ export default function BuyerHome() {
       }
 
       const response = await buyerAxios.post(
-        'http://localhost:3000/api/orders/buy',
+        'https://librix-03l6.onrender.com/api/orders/buy',
         { bookId },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -128,7 +128,7 @@ export default function BuyerHome() {
     }
 
     try {
-      const response = await buyerAxios.post('http://localhost:3000/api/bids/post-request', {
+      const response = await buyerAxios.post('https://librix-03l6.onrender.com/api/bids/post-request', {
         bookName: bidBookName,
         comment: bidComment
       });

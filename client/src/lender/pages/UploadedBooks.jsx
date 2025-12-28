@@ -21,7 +21,7 @@ export default function UploadedBooks() {
     }
 
     // 2. Updated URL: Ensure it hits the specific lend-books endpoint
-    const response = await fetch('http://localhost:3000/api/lend-books/my-books', {
+    const response = await fetch('https://librix-03l6.onrender.com/api/lend-books/my-books', {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`, // Ensure no extra quotes/spaces
