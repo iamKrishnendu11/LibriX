@@ -107,7 +107,7 @@ export default function Navbar() {
               ${
                 onHero
                   ? "md:text-white"
-                  : "border border-black bg-gradient-to-r from-yellow-100 to-green-300 text-black"
+                  : "border border-black bg-gradient-to-br from-yellow-100 to-yellow-50 text-black"
               }
             `}
           >
@@ -122,7 +122,7 @@ export default function Navbar() {
               ${
                 onHero
                   ? "text-white"
-                  : "border border-black bg-gradient-to-r from-yellow-400 to-green-600 text-black"
+                  : "border border-black bg-gradient-to-br from-yellow-50 to-yellow-100 text-black"
               }
             `}
           >

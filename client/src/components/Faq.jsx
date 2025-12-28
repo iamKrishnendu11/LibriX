@@ -137,13 +137,13 @@ export default function FAQSection() {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <span className="inline-block px-4 py-2 rounded-full bg-linear-to-r from-indigo-500/10 to-violet-500/10 border border-indigo-500/20 text-green-400 text-sm font-medium mb-4">
+          <span className="inline-block px-4 py-2 rounded-full bg-linear-to-r from-yellow-200 to-amber-300 border border-yellow-300 text-black text-sm font-medium mb-4">
             LibriX FAQ
           </span>
 
           <h2 className="text-4xl md:text-5xl font-black text-black mb-6">
             Questions about{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-br from-green-600 to-yellow-500
+            <span className="text-transparent bg-clip-text bg-gradient-to-br from-amber-400 to-yellow-200
                 backdrop-blur-lg">
               LibriX
             </span>
@@ -159,7 +159,7 @@ export default function FAQSection() {
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="bg-gradient-to-br from-green-200 to-yellow-300
+          className="bg-gradient-to-br from-amber-100 to-yellow-50
                 backdrop-blur-lg border border-white/10 rounded-3xl p-6 md:p-8"
         >
           {faqs.map((faq, i) => (

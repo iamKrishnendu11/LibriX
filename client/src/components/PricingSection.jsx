@@ -91,14 +91,14 @@ export default function PricingSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.15, duration: 0.7 }}
-              className="relative overflow-hidden rounded-3xl border border-green-200 bg-green-50 group"
+              className="relative overflow-hidden rounded-3xl border border-yellow-200 bg-yellow-50 group"
             >
               {/* Gradient sweep (NEW animation) */}
               <motion.div
                 initial={{ x: "-100%" }}
                 whileHover={{ x: "0%" }}
                 transition={{ duration: 0.6, ease: "easeInOut" }}
-                className="absolute inset-0 bg-gradient-to-r from-green-400 to-yellow-300 opacity-0 group-hover:opacity-100"
+                className="absolute inset-0 bg-gradient-to-r from-amber-200 to-yellow-300 opacity-0 group-hover:opacity-100"
               />
 
               {/* Content */}
@@ -106,14 +106,14 @@ export default function PricingSection() {
 
                 {/* Popular label */}
                 {plan.popular && (
-                  <span className="self-start mb-4 px-3 py-1 text-xs font-semibold rounded-full bg-green-700 text-white">
+                  <span className="self-start mb-4 px-3 py-1 text-xs font-semibold rounded-full bg-yellow-500 text-white">
                     Most Popular
                   </span>
                 )}
 
                 {/* Header */}
                 <div className="mb-8">
-                  <BookOpen className="w-9 h-9 mb-3 text-green-700 group-hover:text-black transition" />
+                  <BookOpen className="w-9 h-9 mb-3 text-yellow-500 group-hover:text-black transition" />
 
                   <h3 className="text-2xl font-bold text-slate-900">
                     {plan.name}
@@ -124,7 +124,7 @@ export default function PricingSection() {
                     initial={{ width: 0 }}
                     whileInView={{ width: 40 }}
                     transition={{ duration: 0.6 }}
-                    className="h-[3px] bg-green-600 rounded-full mt-2"
+                    className="h-[3px] bg-yellow-400 rounded-full mt-2"
                   />
 
                   <div className="mt-5 flex items-end gap-1">
@@ -151,8 +151,8 @@ export default function PricingSection() {
                       variants={item}
                       className="flex items-start gap-3"
                     >
-                      <div className="w-5 h-5 mt-1 rounded-full bg-green-200 flex items-center justify-center">
-                        <Check className="w-3 h-3 text-green-800" />
+                      <div className="w-5 h-5 mt-1 rounded-full bg-yellow-200 flex items-center justify-center">
+                        <Check className="w-3 h-3 text-black" />
                       </div>
                       <span className="text-sm text-slate-700">
                         {feature}
@@ -166,7 +166,7 @@ export default function PricingSection() {
                   to={createPageUrl("Register") + "?role=lender"}
                   className="mt-10"
                 >
-                  <Button className="w-full py-6 rounded-2xl bg-green-700 text-white hover:bg-black transition">
+                  <Button className="w-full py-6 rounded-2xl bg-yellow-300 text-black hover:bg-yellow-500 transition">
                     Choose {plan.name}
                   </Button>
                 </Link>

@@ -4,11 +4,11 @@ import { motion } from 'motion/react';
 import gsap from 'gsap';
 
 const EnhancedMarquee = ({ 
-  text = "Shaping a greener future, One waste at a time", 
+  text = "The digital platform connecting readers online.", 
   speed = 50,
   pauseOnHover = true,
   direction = 'left',
-  className = 'bg-gradient-to-r from-green-100 via-gray-50 to-green-100'
+  className = 'bg-gradient-to-r from-yellow-100 via-gray-50 to-amber-100'
 }) => {
   const containerRef = useRef(null);
   const contentRef = useRef(null);

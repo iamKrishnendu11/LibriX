@@ -40,7 +40,7 @@ export default function HowItWorksHorizontal() {
       <div className="max-w-4xl mx-auto text-center mb-16">
         <h2 className="text-6xl font-bold mb-4 text-slate-900">
           How{" "}
-          <span className="bg-gradient-to-r from-yellow-500 to-green-600 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-amber-300 to-yellow-600 bg-clip-text text-transparent">
             LibriX
           </span>{" "}
           Works
@@ -56,12 +56,12 @@ export default function HowItWorksHorizontal() {
     <div key={step.number} className="flex items-center">
       
       {/* Step Card */}
-      <div className="flex flex-col items-center text-center bg-gradient-to-br from-green-200 to-yellow-100 backdrop-blur-lg border border-white/40 rounded-2xl px-6 py-8 w-64 shadow-md">
-        <div className="text-sm font-semibold text-green-700 mb-2">
+      <div className="flex flex-col items-center text-center bg-gradient-to-br from-yellow-200 to-amber-100 backdrop-blur-lg border border-white/40 rounded-2xl px-6 py-8 w-64 shadow-md">
+        <div className="text-sm font-semibold text-black mb-2">
           STEP {step.number}
         </div>
 
-        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-yellow-400 to-green-600 flex items-center justify-center mb-4">
+        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-300 to-yellow-600 flex items-center justify-center mb-4">
           <step.icon className="w-6 h-6 text-black" />
         </div>
 
@@ -76,7 +76,7 @@ export default function HowItWorksHorizontal() {
 
       {/* Arrow */}
       {index !== steps.length - 1 && (
-        <ArrowRight className="hidden md:block mx-4 text-green-600 w-6 h-6 flex-shrink-0" />
+        <ArrowRight className="hidden md:block mx-4 text-black w-6 h-6 flex-shrink-0" />
       )}
     </div>
   ))}

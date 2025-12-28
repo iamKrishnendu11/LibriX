@@ -69,14 +69,14 @@ const Features = () => {
         {/* Feature 1 */}
         <motion.div
           variants={cardVariants}
-          className="md:col-span-3 md:row-span-2 p-8 bg-gradient-to-br from-green-200 to-yellow-100 backdrop-blur-lg border border-white/30 rounded-3xl hover:border-amber-400/50 transition-all duration-300 hover:-translate-y-1 group"
+          className="md:col-span-3 md:row-span-2 p-8 bg-gradient-to-br from-yellow-200 to-amber-100 backdrop-blur-lg border border-white/30 rounded-3xl hover:border-amber-400/50 transition-all duration-300 hover:-translate-y-1 group"
         >
           <div className="flex flex-col h-full">
             <div className="mb-6 flex justify-between items-center">
-              <div className="text-6xl group-hover:scale-110 transition-transform">📖</div>
-              <div className="bg-gray-400/60 p-4 rounded-full group-hover:rotate-45 transition-transform">
+              {/* <div className="text-6xl group-hover:scale-110 transition-transform">📖</div> */}
+              {/* <div className="bg-gray-400/60 p-4 rounded-full group-hover:rotate-45 transition-transform">
                 <ArrowUpRight />
-              </div>
+              </div> */}
             </div>
 
             <h3 className="text-3xl font-bold text-gray-900 mb-2">
@@ -104,14 +104,14 @@ const Features = () => {
         {/* Feature 2 */}
         <motion.div
           variants={cardVariants}
-          className="md:col-span-3 p-8 flex justify-between items-end gap-6 bg-gradient-to-br from-green-200 to-yellow-100 backdrop-blur-lg border border-white/30 rounded-3xl hover:border-amber-400/50 transition-all duration-300 hover:-translate-y-1 group"
+          className="md:col-span-3 p-8 flex justify-between items-end gap-6 bg-gradient-to-br from-yellow-200 to-amber-100 backdrop-blur-lg border border-white/30 rounded-3xl hover:border-amber-400/50 transition-all duration-300 hover:-translate-y-1 group"
         >
           <div>
             <div className="mb-6 flex justify-between items-center">
-              <div className="text-5xl group-hover:scale-110 transition-transform">🤖</div>
-              <div className="bg-gray-400/60 p-4 rounded-full group-hover:rotate-45 transition-transform">
+              {/* <div className="text-5xl group-hover:scale-110 transition-transform">🤖</div> */}
+              {/* <div className="bg-gray-400/60 p-4 rounded-full group-hover:rotate-45 transition-transform">
                 <ArrowUpRight />
-              </div>
+              </div> */}
             </div>
 
             <h3 className="text-2xl font-bold text-gray-900 mb-2">
@@ -133,13 +133,13 @@ const Features = () => {
         {/* Feature 3 */}
         <motion.div
           variants={cardVariants}
-          className="md:col-span-2 p-8 bg-gradient-to-br from-green-200 to-yellow-100 backdrop-blur-lg border border-white/30 rounded-3xl hover:border-amber-400/50 transition-all duration-300 hover:-translate-y-1 group"
+          className="md:col-span-2 p-8 bg-gradient-to-br from-yellow-200 to-amber-100 duration-300 hover:-translate-y-1 group"
         >
           <div className="mb-6 flex justify-between items-center">
-            <div className="text-5xl group-hover:scale-110 transition-transform">💰</div>
-            <div className="bg-gray-400/60 p-4 rounded-full group-hover:rotate-45 transition-transform">
+            {/* <div className="text-5xl group-hover:scale-110 transition-transform">💰</div> */}
+            {/* <div className="bg-gray-400/60 p-4 rounded-full group-hover:rotate-45 transition-transform">
               <ArrowUpRight />
-            </div>
+            </div> */}
           </div>
 
           <h3 className="text-2xl font-bold text-gray-900 mb-2">
@@ -156,13 +156,13 @@ const Features = () => {
         <motion.div
           variants={cardVariants}
           whileTap={{ scale: 0.97 }}
-          className="md:col-span-1 p-8 bg-gradient-to-br from-green-200 to-yellow-100 backdrop-blur-lg 
+          className="md:col-span-1 p-8 bg-gradient-to-br from-yellow-200 to-amber-100 backdrop-blur-lg 
                     border border-white/30 rounded-3xl hover:border-amber-400/50 
                     transition-all duration-300 hover:-translate-y-1 group 
                     text-center cursor-pointer"
         >
           <a
-            href="https://book-reccomendation.onrender.com/"
+            href="https://recommendation-librix.streamlit.app/"
             target="_blank"
             rel="noopener noreferrer"
             className="block h-full w-full"
@@ -176,9 +176,9 @@ const Features = () => {
             </div>
 
             {/* Icon */}
-            <div className="text-6xl mb-3 group-hover:scale-110 transition-transform">
+            {/* <div className="text-6xl mb-3 group-hover:scale-110 transition-transform">
               📚
-            </div>
+            </div> */}
 
             {/* Title */}
             <h3 className="text-md font-bold text-gray-900">
@@ -199,19 +199,19 @@ const Features = () => {
         initial="hidden"
         whileInView="show"
         viewport={{ once: true }}
-        className="mt-6 p-8 bg-gradient-to-br from-green-200 to-yellow-100 backdrop-blur-lg border border-white/30 rounded-3xl hover:border-amber-400/50 transition-all duration-300 hover:-translate-y-1 group"
+        className="mt-6 p-8 bg-gradient-to-br from-yellow-200 to-amber-100 backdrop-blur-lg border border-white/30 rounded-3xl hover:border-amber-400/50 transition-all duration-300 hover:-translate-y-1 group"
       >
         <div className="flex gap-6">
-          <div className="text-5xl group-hover:scale-110 transition-transform">🏛️</div>
+          {/* <div className="text-5xl group-hover:scale-110 transition-transform">🏛️</div> */}
 
           <div className="flex-1">
             <div className="flex justify-between items-center">
               <h3 className="text-2xl font-bold text-gray-900">
                 Literary Programs & Initiatives
               </h3>
-              <div className="bg-gray-400/60 p-4 rounded-full group-hover:rotate-45 transition-transform">
+              {/* <div className="bg-gray-400/60 p-4 rounded-full group-hover:rotate-45 transition-transform">
                 <ArrowUpRight />
-              </div>
+              </div> */}
             </div>
 
             <p className="text-gray-600 text-lg mt-2">

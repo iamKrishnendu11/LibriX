@@ -113,7 +113,7 @@ const Footer = () => {
               className="text-gray-400 text-sm font-medium mb-4"
               variants={slideFromBottom}
               custom={0}
-              whileHover={{ color: '#10B981' }}
+              whileHover={{ color: '#FFEE58' }}
               transition={{ duration: 0.2 }}
             >
               Newsletter
@@ -133,14 +133,14 @@ const Footer = () => {
               <motion.input
                 type="email"
                 placeholder="Enter your email"
-                className="flex-1 px-4 py-2 bg-gray-800 border border-gray-700 rounded-l-lg focus:outline-none focus:border-purple-400 text-sm text-white placeholder-gray-400 transition-all duration-300"
+                className="flex-1 px-4 py-2 bg-gray-800 border border-gray-700 rounded-l-lg focus:outline-none focus:border-yellow-400 text-sm text-white placeholder-gray-400 transition-all duration-300"
                 whileFocus={{ 
-                  borderColor: '#C084FC',
+                  borderColor: '#FFEE58',
                   boxShadow: '0 0 0 2px rgba(192, 132, 252, 0.2)'
                 }}
               />
               <motion.button 
-                className="px-4 py-2 bg-gradient-to-r from-yellow-400 to-green-600 text-black rounded-r-lg hover:bg-purple-500 transition-colors text-sm font-medium"
+                className="px-4 py-2 bg-gradient-to-r from-yellow-400 to-amber-300 text-black rounded-r-lg hover:bg-purple-500 transition-colors text-sm font-medium"
                 whileHover={{ 
                   scale: 1.05,
                   backgroundColor: '#9333ea'
@@ -187,7 +187,7 @@ const Footer = () => {
                   >
                     {social}
                     <motion.span
-                      className="absolute -left-2 top-1/2 transform -translate-y-1/2 w-1 h-1 bg-green-400 rounded-full"
+                      className="absolute -left-2 top-1/2 transform -translate-y-1/2 w-1 h-1 bg-yellow-400 rounded-full"
                       initial={{ scale: 0 }}
                       whileHover={{ scale: 1 }}
                       transition={{ duration: 0.2 }}
@@ -276,14 +276,14 @@ const Footer = () => {
             className="text-[7.29vw] lg:text-[10.5vw] font-bold select-none leading-tight tracking-tighter cursor-pointer scale-[1.02]"
             style={{
               background:
-                "linear-gradient(180deg, #3BF799 30%, #24D152 50%, #000000 100%)",
+                "linear-gradient(180deg, #FFEE58 30%, #FFD300 50%, #000000 100%)",
               backgroundClip: "text",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
-              textShadow: "0 0 20px rgba(59, 247, 153, 0.3)"
+              textShadow: "0 0 20px rgba(225, 113, 0, 0.3)"
             }}
             whileHover={{
-              textShadow: "0 0 30px rgba(59, 247, 153, 0.5)"
+              textShadow: "0 0 30px rgba(225, 113, 0, 0.5)"
             }}
             transition={{ duration: 0.3 }}
           >

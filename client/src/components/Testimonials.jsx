@@ -99,7 +99,7 @@ export default function Testimonials() {
       transition={{ duration: 0.5, delay: index * 0.1 }}
       className="flex-shrink-0 w-[350px] mx-4"
     >
-      <div className="bg-gradient-to-br from-green-200 to-yellow-100 backdrop-blur-lg
+      <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 backdrop-blur-lg
                   border rounded-2xl p-4 border border-gray-200 shadow-lg hover:shadow-xl transition-shadow duration-300 h-full flex flex-col">
         {/* Quote Icon */}
         <div className="absolute -top-2 -left-3">
@@ -143,7 +143,7 @@ export default function Testimonials() {
     <section className="relative py-24 bg-white overflow-hidden">
       {/* Background Effects */}
       <div className="absolute inset-0">
-        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-green-400/50 to-transparent" />
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-yellow-200 to-transparent" />
         <div className="absolute top-1/4 left-0 w-96 h-96 bg-yellow-400/10 rounded-full blur-[120px]" />
         <div className="absolute bottom-1/4 right-0 w-80 h-80 bg-green-400/10 rounded-full blur-[100px]" />
       </div>
@@ -156,13 +156,13 @@ export default function Testimonials() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16 px-4"
         >
-          <span className="inline-block px-4 py-1.5 text-sm font-medium text-green-600 bg-green-100 rounded-full border border-green-200 mb-6">
+          <span className="inline-block px-4 py-1.5 text-sm font-medium text-yellow-700 bg-yellow-100 rounded-full border border-amber-400 mb-6">
             Client Success Stories
           </span>
 
           <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
             What Our Clients{" "}
-            <span className="bg-gradient-to-r from-yellow-500 to-green-500 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-yellow-300 to-amber-400 bg-clip-text text-transparent">
               Say
             </span>
           </h2>
@@ -195,7 +195,7 @@ export default function Testimonials() {
             </motion.div>
           </div>
           {/* Gradient Overlays */}
-          <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-green-50 to-transparent pointer-events-none" />
+          <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-yellow-50 to-transparent pointer-events-none" />
           <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-yellow-50 to-transparent pointer-events-none" />
         </div>
 
@@ -222,7 +222,7 @@ export default function Testimonials() {
             </motion.div>
           </div>
           {/* Gradient Overlays */}
-          <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-green-50 to-transparent pointer-events-none" />
+          <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-yellow-50 to-transparent pointer-events-none" />
           <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-yellow-50 to-transparent pointer-events-none" />
         </div>
 
@@ -249,7 +249,7 @@ export default function Testimonials() {
             </motion.div>
           </div>
           {/* Gradient Overlays */}
-          <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-green-50 to-transparent pointer-events-none" />
+          <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-yellow-50 to-transparent pointer-events-none" />
           <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-yellow-50 to-transparent pointer-events-none" />
         </div>
 
@@ -282,7 +282,7 @@ export default function Testimonials() {
                   type: "spring",
                   stiffness: 200 
                 }}
-                className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-yellow-500 to-green-500 bg-clip-text text-transparent mb-2"
+                className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-yellow-500 to-yellow-300 bg-clip-text text-transparent mb-2"
               >
                 {stat.value}
               </motion.div>

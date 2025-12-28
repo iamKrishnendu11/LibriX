@@ -95,9 +95,9 @@ export default function ContactForm() {
     <section id='help' className="relative py-24 bg-white overflow-hidden">
       {/* Background Effects */}
       <div className="absolute inset-0">
-        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-yellow-400/50 to-transparent" />
-        <div className="absolute top-1/4 right-0 w-96 h-96 bg-green-400/10 rounded-full blur-[120px]" />
-        <div className="absolute bottom-1/4 left-0 w-80 h-80 bg-yellow-400/10 rounded-full blur-[100px]" />
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-yellow-50 to-transparent" />
+        <div className="absolute top-1/4 right-0 w-96 h-96 bg-yellow-50 rounded-full blur-[120px]" />
+        <div className="absolute bottom-1/4 left-0 w-80 h-80 bg-yellow-50 rounded-full blur-[100px]" />
       </div>
 
       <div ref={ref} className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -108,13 +108,13 @@ export default function ContactForm() {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <span className="inline-block px-4 py-1.5 text-sm font-medium text-green-600 bg-green-100 rounded-full border border-green-200 mb-6">
+          <span className="inline-block px-4 py-1.5 text-sm font-medium text-black bg-yellow-200 rounded-full border border-amber-200 mb-6">
             Get In Touch
           </span>
 
           <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
             Let's{" "}
-            <span className="bg-gradient-to-r from-yellow-500 to-green-500 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-yellow-500 to-amber-500 bg-clip-text text-transparent">
               Connect
             </span>
           </h2>
@@ -147,14 +147,14 @@ export default function ContactForm() {
                 className={`relative px-8 py-4 rounded-2xl font-semibold transition-all duration-300 overflow-hidden ${
                   isActive
                     ? 'text-white shadow-xl'
-                    : 'bg-white text-gray-700 border-2 border-gray-200 hover:border-green-300 hover:shadow-lg'
+                    : 'bg-white text-gray-700 border-2 border-gray-200 hover:border-amber-300 hover:shadow-lg'
                 }`}
               >
                 {/* Animated Background */}
                 {isActive && (
                   <motion.div
                     layoutId="activeBackground"
-                    className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-green-500"
+                    className="absolute inset-0 bg-gradient-to-r from-yellow-300 to-amber-100"
                     initial={false}
                     transition={{ type: "spring", stiffness: 300, damping: 30 }}
                   />
@@ -166,7 +166,7 @@ export default function ContactForm() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-green-500 blur-xl opacity-50"
+                    className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-amber-200 blur-xl text-black opacity-50"
                   />
                 )}
 
@@ -215,7 +215,7 @@ export default function ContactForm() {
                     initial={{ scale: 0, rotate: -180 }}
                     animate={{ scale: 1, rotate: 0 }}
                     transition={{ type: "spring", stiffness: 200, delay: 0.1 }}
-                    className="w-12 h-12 rounded-xl bg-gradient-to-r from-yellow-400 to-green-500 flex items-center justify-center shadow-lg"
+                    className="w-12 h-12 rounded-xl bg-gradient-to-r from-yellow-400 to-amber-200 flex items-center justify-center shadow-lg"
                   >
                     {React.createElement(userTypes.find(t => t.id === userType).icon, {
                       className: "w-6 h-6 text-white"
@@ -231,7 +231,7 @@ export default function ContactForm() {
                       Contact Us
                     </motion.h3>
                     <motion.p 
-                      className="text-sm text-green-600 font-medium"
+                      className="text-sm text-yellow-600 font-medium"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ delay: 0.3 }}
@@ -421,7 +421,7 @@ export default function ContactForm() {
                     <Button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full h-12 bg-gradient-to-r from-yellow-400 to-green-500 hover:from-yellow-500 hover:to-green-600 text-white font-semibold text-base rounded-lg shadow-lg shadow-green-500/25 transition-all duration-300"
+                      className="w-full h-12 bg-gradient-to-r from-yellow-400 to-amber-300 hover:from-yellow-500 hover:to-amber-600 text-white font-semibold text-base rounded-lg shadow-lg shadow-green-500/25 transition-all duration-300"
                     >
                       {isSubmitting ? (
                         <Loader2 className="w-5 h-5 animate-spin" />
