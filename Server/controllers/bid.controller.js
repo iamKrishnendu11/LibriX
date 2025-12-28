@@ -1,32 +1,21 @@
 // controllers/bid.controller.js
 import Bid from "../models/bid.model.js";
-import Offer from "../models/offer.model.js"; // ✅ CRUCIAL: Added missing import
+import Offer from "../models/offer.model.js";
 
 // Buyers post their book requests
 export const placeBidRequest = async (req, res) => {
   try {
     const { bookName, comment } = req.body;
-
     if (!bookName || !comment) {
-      return res.status(400).json({ 
-        success: false, 
-        message: "Book name and comment are required" 
-      });
+      return res.status(400).json({ success: false, message: "Book name and comment are required" });
     }
-
     const newBid = await Bid.create({
       buyer: req.buyerId, 
       bookName,
       comment
     });
-
-    res.status(201).json({
-      success: true,
-      message: "Bid request posted successfully",
-      bid: newBid
-    });
+    res.status(201).json({ success: true, message: "Bid request posted successfully", bid: newBid });
   } catch (error) {
-    console.error("BID CONTROLLER ERROR:", error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
@@ -37,27 +26,38 @@ export const getAllOpenBids = async (req, res) => {
     const bids = await Bid.find({ status: "open" })
       .populate("buyer", "name email")
       .sort({ createdAt: -1 });
-      
     res.status(200).json({ success: true, bids });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
 };
 
-// ✅ For the "My Orders" Bids tab: Fetch accepted offers for a buyer
+// ✅ For Buyer: Fetch accepted offers
 export const getMyAcceptedOffers = async (req, res) => {
   try {
-    const offers = await Offer.find({ 
-      buyer: req.buyerId, 
-      status: "accepted" 
-    })
+    const offers = await Offer.find({ buyer: req.buyerId, status: "accepted" })
     .populate("bidRequest")
     .populate("seller", "name")
+    .sort({ updatedAt: -1 });
+    res.json({ success: true, offers });
+  } catch (error) {
+    res.status(500).json({ success: true, message: error.message });
+  }
+};
+
+// ✅ NEW: For Seller: Fetch bidding wins for Sales History
+export const getSellerAcceptedOffers = async (req, res) => {
+  try {
+    const offers = await Offer.find({ 
+      seller: req.sellerId, 
+      status: { $in: ["accepted", "delivered"] } 
+    })
+    .populate("bidRequest")
+    .populate("buyer", "name email")
     .sort({ updatedAt: -1 });
 
     res.json({ success: true, offers });
   } catch (error) {
-    console.error("GET ACCEPTED OFFERS ERROR:", error);
     res.status(500).json({ success: false, message: error.message });
   }
 };

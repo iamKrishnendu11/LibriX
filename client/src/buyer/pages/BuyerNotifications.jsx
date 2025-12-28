@@ -20,6 +20,7 @@ export default function BuyerNotifications() {
   const [isLoading, setIsLoading] = useState(true);
 
   // ---------------- FETCH NOTIFICATIONS ----------------
+  // ... imports ...
   const fetchNotifications = async () => {
     const token = localStorage.getItem("buyerAccessToken");
     if (!token) return;
@@ -27,17 +28,26 @@ export default function BuyerNotifications() {
     try {
       const res = await buyerAxios.get(
         "http://localhost:3000/api/orders/buyer/notifications",
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
-      setNotifications(res.data);
+
+      // ✅ PREVENT OVERWRITE: Keep handled status if server hasn't updated yet
+      setNotifications(prev => {
+        return res.data.map(newN => {
+          const existingN = prev.find(p => p._id === newN._id);
+          if (existingN && existingN.orderStatus !== "pending" && newN.orderStatus === "pending") {
+            return { ...newN, orderStatus: existingN.orderStatus };
+          }
+          return newN;
+        });
+      });
     } catch (error) {
-      console.error("Error fetching buyer notifications:", error);
+      console.error("Error fetching notifications:", error);
     } finally {
       setIsLoading(false);
     }
   };
+// ... rest of component ...
 
   // ---------------- HANDLE OFFER RESPONSE ----------------
   const handleOfferAction = async (notification, action) => {

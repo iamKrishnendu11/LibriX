@@ -4,7 +4,7 @@ import Notification from "../models/notification.model.js";
 import Bid from "../models/bid.model.js";
 import { io } from "../server.js";
 
-// controllers/offer.controller.js
+// --- SELLERS CREATE AN OFFER FOR A BID ---
 export const createOffer = async (req, res) => {
   try {
     const { bidId, price, condition, message, buyerId, bookName } = req.body;
@@ -15,7 +15,7 @@ export const createOffer = async (req, res) => {
       bidRequest: bidId,
       seller: req.sellerId,
       buyer: buyerId,
-      bookImage: req.file.path, // This is the Cloudinary URL
+      bookImage: req.file.path, // Cloudinary URL
       price,
       condition,
       message
@@ -27,17 +27,15 @@ export const createOffer = async (req, res) => {
       recipientModel: "buyer",
       title: "New Offer Received!",
       message: `A seller offered "${bookName}" for ₹${price}. Click to view details.`,
-      
-      // ✅ PASS THE IMAGE URL HERE
       imageUrl: req.file.path, 
-
       type: "order_request",
       orderId: offer._id,
       orderStatus: "pending"
     });
 
+    // ✅ FIX: Use .toObject() to prevent Socket.io circular reference crashes
     if (io) {
-      io.to(`buyer_${buyerId}`).emit("new_notification", notification);
+      io.to(`buyer_${buyerId}`).emit("new_notification", notification.toObject());
     }
 
     res.status(201).json({ success: true, offer });
@@ -46,23 +44,31 @@ export const createOffer = async (req, res) => {
   }
 };
 
+// --- BUYERS RESPOND (ACCEPT/DECLINE) TO OFFER ---
 export const handleOfferResponse = async (req, res) => {
   try {
     const { offerId, action } = req.body;
     const status = action === "accept" ? "accepted" : "declined";
 
-    // 1. Update Offer Status
+    // 1. Update Offer Status in DB
     const offer = await Offer.findByIdAndUpdate(offerId, { status }, { new: true })
       .populate("bidRequest seller buyer");
+
+    // 2. ✅ CRUCIAL FIX: Update the original notification document status
+    // This prevents the buttons from reappearing during the next fetch/poll
+    await Notification.findOneAndUpdate(
+      { orderId: offerId, type: "order_request" }, 
+      { orderStatus: status }
+    );
 
     if (status === "accepted") {
       await Bid.findByIdAndUpdate(offer.bidRequest._id, { status: "fulfilled" });
       
-      // ✅ TRIGGER AUTOMATED LIFECYCLE
+      // Trigger automated 5-minute lifecycle
       simulateOfferLifecycle(offer);
     }
 
-    // 2. Notify the Seller
+    // 3. Notify the Seller of the response
     const sellerNote = await Notification.create({
       recipient: offer.seller._id,
       recipientModel: "seller",
@@ -71,7 +77,8 @@ export const handleOfferResponse = async (req, res) => {
       type: "order_update"
     });
 
-    if (io) io.to(`seller_${offer.seller._id}`).emit("new_notification", sellerNote);
+    // ✅ FIX: Emit plain object
+    if (io) io.to(`seller_${offer.seller._id}`).emit("new_notification", sellerNote.toObject());
 
     res.json({ success: true, message: `Offer ${status}ed` });
   } catch (error) {
@@ -79,8 +86,9 @@ export const handleOfferResponse = async (req, res) => {
   }
 };
 
+// --- AUTOMATED 5-10 MINUTE LIFECYCLE SIMULATION ---
 const simulateOfferLifecycle = (offer) => {
-  // --- AFTER 5 MINUTES: Payment Received (Seller) & Out for Delivery (Buyer) ---
+  // Step 1: Payment & Out for Delivery (After 5 Minutes)
   setTimeout(async () => {
     try {
       const sellerPayNote = await Notification.create({
@@ -100,11 +108,11 @@ const simulateOfferLifecycle = (offer) => {
       });
 
       if (io) {
-        io.to(`seller_${offer.seller._id}`).emit("new_notification", sellerPayNote);
-        io.to(`buyer_${offer.buyer._id}`).emit("new_notification", buyerDelNote);
+        io.to(`seller_${offer.seller._id}`).emit("new_notification", sellerPayNote.toObject());
+        io.to(`buyer_${offer.buyer._id}`).emit("new_notification", buyerDelNote.toObject());
       }
 
-      // --- AFTER MORE 5 MINUTES (Total 10): Delivered (Buyer) ---
+      // Step 2: Delivered (After 5 more Minutes)
       setTimeout(async () => {
         try {
           const deliveredNote = await Notification.create({
@@ -115,10 +123,10 @@ const simulateOfferLifecycle = (offer) => {
             type: "order_update"
           });
 
-          if (io) io.to(`buyer_${offer.buyer._id}`).emit("new_notification", deliveredNote);
-        } catch (err) { console.error(err); }
+          if (io) io.to(`buyer_${offer.buyer._id}`).emit("new_notification", deliveredNote.toObject());
+        } catch (err) { console.error("Delivered SIM error:", err); }
       }, 300000); // 5 mins
 
-    } catch (err) { console.error(err); }
+    } catch (err) { console.error("Payment SIM error:", err); }
   }, 300000); // 5 mins
 };

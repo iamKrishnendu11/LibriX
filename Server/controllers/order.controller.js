@@ -223,3 +223,21 @@ export const getMyOrders = async (req, res) => {
     res.status(500).json({ message: "Failed to fetch orders" });
   }
 };
+
+
+export const getSellerOrders = async (req, res) => {
+  try {
+    const sellerId = req.sellerId;
+
+    // Fetch standard orders
+    const orders = await Order.find({ seller: sellerId })
+      .populate("book")
+      .populate("buyer", "name email")
+      .sort({ createdAt: -1 });
+
+    res.json({ success: true, orders });
+  } catch (error) {
+    console.error("GET SELLER ORDERS ERROR:", error);
+    res.status(500).json({ message: "Failed to fetch sales history" });
+  }
+};

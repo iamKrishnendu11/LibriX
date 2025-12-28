@@ -4,7 +4,8 @@ import {
   handleOrderAction, 
   getBuyerNotifications,
   getSellerNotifications,
-  getMyOrders // ✅ ADD THIS IMPORT
+  getMyOrders,
+  getSellerOrders, // ✅ ADD THIS IMPORT
 } from "../controllers/order.controller.js";
 import { buyerProtect } from "../middlewares/buyerAuth.middleware.js";
 import { sellerProtect } from "../middlewares/sellerAuth.middleware.js";
@@ -16,6 +17,7 @@ router.post("/seller-action", sellerProtect, handleOrderAction);
 
 // ✅ NEW ROUTE: Fetch all purchase and rental orders for the buyer
 router.get("/my-orders", buyerProtect, getMyOrders);
+router.get("/seller/all-orders", sellerProtect, getSellerOrders);
 
 // ✅ EXISTING ROUTES: Notifications
 router.get("/seller/notifications", sellerProtect, getSellerNotifications);

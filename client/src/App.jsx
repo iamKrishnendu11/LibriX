@@ -10,6 +10,7 @@ import SellerUploads from "./seller/pages/upload.jsx";
 import SellerBids from "./seller/pages/SellerBids.jsx";
 import SellerChat from "./seller/pages/SellerChat.jsx";
 import SellerNotification from "./seller/pages/SellerNotification.jsx";
+import SellerOrders from "./seller/pages/sellerOrderHistory.jsx";
 
 import LenderDashboard from "./lender/pages/Dashboard.jsx";
 import LenderUpload from "./lender/pages/LenderUpload.jsx";
@@ -65,6 +66,7 @@ export default function App() {
           <Route path="/seller/uploads" element={<SellerUploads />} />
           <Route path="/seller/bids" element={<SellerBids />} />
           <Route path="/seller/chat" element={<SellerChat />} />
+          <Route path="/seller/orders" element={<SellerOrders />} />
           <Route
             path="/seller/notification"
             element={<SellerNotification />}
