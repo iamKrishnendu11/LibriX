@@ -5,9 +5,8 @@ import http from "http";
 import { Server } from "socket.io";
 import jwt from "jsonwebtoken";
 
-
 import connectDB from "./configs/db.js";
-import {connectCloudinary} from "./configs/cloudinaryConfig.js";
+import { connectCloudinary } from "./configs/cloudinaryConfig.js";
 
 import sellerAuthRouter from "./routes/sellerAuth.route.js";
 import buyerAuthRouter from "./routes/buyerAuth.route.js";
@@ -26,11 +25,32 @@ const port = process.env.PORT || 3000;
 await connectDB();
 connectCloudinary();
 
+/* ------------------ CORS (FIXED) ------------------ */
+const allowedOrigins = [
+  "https://librix-eta.vercel.app",
+  "http://localhost:5173",
+  "http://localhost:3000"
+];
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true); // allow server-to-server
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      return callback(new Error("CORS not allowed"));
+    },
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"]
+  })
+);
+
+// IMPORTANT: handle preflight requests
+app.options("*", cors());
+
 /* ------------------ MIDDLEWARE ------------------ */
-app.use(cors({
-  origin: "https://librix-eta.vercel.app/",
-  credentials: true
-}));
 app.use(express.json());
 
 /* ------------------ ROUTES ------------------ */
@@ -42,10 +62,10 @@ app.use("/api/books", bookRouter);
 app.use("/api/orders", orderRouter);
 app.use("/api/lend-books", lendBookRouter);
 app.use("/api/rent-orders", rentOrderRouter);
-app.use("/api/bids",bidsRouter)
+app.use("/api/bids", bidsRouter);
 
 app.get("/", (req, res) => {
-  res.send("Welcome to the LibriX Server!");
+  res.send("🚀 LibriX backend running successfully");
 });
 
 /* ------------------ SOCKET.IO ------------------ */
@@ -53,7 +73,7 @@ const server = http.createServer(app);
 
 export const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: allowedOrigins,
     credentials: true
   }
 });
@@ -62,21 +82,16 @@ io.use((socket, next) => {
   const token = socket.handshake.auth?.token;
 
   if (!token) {
-    console.log("❌ Socket auth failed: token missing");
-    return next(new Error("Authentication error"));
+    return next(new Error("Authentication error: token missing"));
   }
 
   try {
-    // Decode WITHOUT verification to read role
     const decodedUnverified = jwt.decode(token);
-
     if (!decodedUnverified?.role) {
-      console.log("❌ Socket auth failed: role missing");
-      return next(new Error("Authentication error"));
+      return next(new Error("Authentication error: role missing"));
     }
 
     let secret;
-
     switch (decodedUnverified.role) {
       case "seller":
         secret = process.env.SELLER_ACCESS_TOKEN_SECRET;
@@ -92,26 +107,20 @@ io.use((socket, next) => {
     }
 
     const decoded = jwt.verify(token, secret);
-
     socket.userId = decoded.id;
     socket.role = decoded.role;
 
-    console.log(`✅ ${decoded.role} socket authenticated:`, decoded.id);
     next();
   } catch (err) {
-    console.log("❌ Socket auth failed:", err.message);
     next(new Error("Authentication error"));
   }
 });
-
 
 io.on("connection", (socket) => {
   console.log("🟢 Socket connected:", socket.id);
 
   if (socket.userId && socket.role) {
-    const room = `${socket.role}_${socket.userId}`;
-    socket.join(room);
-    console.log(`👤 ${room} joined room`);
+    socket.join(`${socket.role}_${socket.userId}`);
   }
 
   socket.on("disconnect", () => {
@@ -119,8 +128,7 @@ io.on("connection", (socket) => {
   });
 });
 
-
 /* ------------------ START SERVER ------------------ */
 server.listen(port, () => {
-  console.log(`🚀 Server running on http://localhost:${port}`);
+  console.log(`✅ Server running on port ${port}`);
 });
